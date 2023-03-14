@@ -1,49 +1,57 @@
-<%- include('includes/head.ejs') %>
+<%- include('../includes/head.ejs') %>
 </head>
 <body>
-    <%- include('includes/navigation.ejs') %>
+    <%- include('../includes/navigation.ejs') %>
     <main>
         <% if (prods.length > 0) { %>
         <div class="mr-4">
             <div class="header flex flex-col content-center my-20">
                         <h1 class="hero text-8xl font-bold text-gray-900">Welcome</h1>
-                        <p class="text-gray-500 text-2xl text-center"><i class="fa-li fa fa-spinner fa-spin"></i> A not so-great shopping store</p>
+                        <p class="text-gray-500 text-2xl text-center">
+                            <i class="fa-li fa fa-spinner fa-spin">
+                            </i> A not so-great shopping store
+                        </p>
                 </div>
-
-            <div class="grid grid-cols-4 gap-10 m-10 ">
+            <div class="grid grid-cols-4 grid-rows-4 gap-10 m-10 ">
                 <% for (let product of prods) { %>
-                <div class="card col-span-1 max-w-md h-full bg-base-100 shadow-2xl rounded-12 overflow-hidden
-                 m-auto">
+                <div class="card col-span-1 max-w-md mx-auto h-full bg-base-100 shadow-2xl rounded-12 overflow-hidden">
                     <div>
                         <figure>
-                            <img src="https://online.thermospas.com/v/vspfiles/photos/SA1009-2T.jpg" alt="<%= product.title %>" />
+                            <img
+                                src="<%= product.imageUrl %>"
+                                alt="<%= product.title %>"
+                                class="w-full" />
                             </figure>
-                                <div class="px-2 py-2 content m-4 ">
-
+                                <div class="px-2 py-2 content m-4">
                                         <h2 class="card-title block">
                                             <%= product.title %>
                                         </h2>
-                                        <h4 class="card-title product__price text-2xl">
-                                            <%= product.price %>$19.99
+                                        <h4 class="card-price product__price text-5xl font-bold mt-2 text-center">
+                                            $ <%= product.price %>
                                         </h4>
-                                    <div class="card-description grid grid-rows-3 my-4 gap-2 item-center">
-                                    <p class="text-center"><%= product.description %>asdaasdkasl;daslfalsfsdasdadsadnaksndkansdas</p>
+                                    <div class="card-description grid grid-rows-2 my-4 mt-4 gap-2 item-center">
+                                        <p class="text-center mt-4"><%= product.description %></p>
                                     </div>
-                                <div class="card-actions">
-                                    <button class="btn btn-primary">Add to Cart</button>
+                                    <div class="card-actions">
+                                    <button
+                                        class="btn btn-primary"
+                                        >Add to Cart
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 <% } %>
-            <% } else { %>
-        <div class="text-center m-auto">
-            <h1 class="card-title text-8xl mt-10"> No Products Found</h1>
-        </div>
-    <% } %>
-
                 </div>
+            </div>
+            <% } else { %>
+        <div class="container text-center mt-40">
+            <div class="card hero m-20 ">
+                <h1 class="card-title text-8xl"> No Products Found!</h1>
+            </div>
         </div>
+        <% } %>
+
 
         <!-- </div>
         <div class="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-100 sm:px-6 lg:px-8">
@@ -68,4 +76,4 @@
         </div> -->
     </main>
 
-<%- include('includes/end.ejs') %>
+<%- include('../includes/end.ejs') %>

@@ -1,0 +1,77 @@
+<%- include('../includes/head.ejs') %>
+</head>
+<body>
+    <%- include('../includes/navigation.ejs') %>
+    <main>
+        <% if (prods.length > 0) { %>
+        <div class="mr-4">
+            <div class="header flex flex-col content-center my-20">
+                        <h1 class="hero text-8xl font-bold text-gray-900">Welcome</h1>
+                        <p class="text-gray-500 text-2xl text-center">
+                            <i class="fa-li fa fa-spinner fa-spin">
+                            </i> A not so-great shopping store
+                        </p>
+                </div>
+            <div class="grid grid-cols-4 grid-rows-4 gap-10 m-10 ">
+                <% for (let product of prods) { %>
+                <div class="card col-span-1 max-w-md mx-auto h-full bg-base-100 shadow-2xl rounded-12 overflow-hidden">
+                    <div>
+                        <figure>
+                            <img
+                                src="<%= product.imageUrl %>"
+                                alt="<%= product.title %>"
+                                class="w-full" />
+                            </figure>
+                                <div class="px-2 py-2 content m-4">
+                                        <h2 class="card-title block">
+                                            <%= product.title %>
+                                        </h2>
+                                        <h4 class="card-price product__price text-5xl font-bold mt-2 text-center">
+                                            $ <%= product.price %>
+                                        </h4>
+                                    <div class="card-description grid grid-rows-2 my-4 mt-4 gap-2 item-center">
+                                        <p class="text-center mt-4"><%= product.description %></p>
+                                    </div>
+                                    <div class="card-actions">
+                                    <a href="/admin/edit-product"  class="btn btn-primary">Edit</a>
+                                    <a href="#"  class="btn btn-accent">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+                </div>
+            </div>
+            <% } else { %>
+        <div class="container text-center mt-40">
+            <div class="card hero m-20 ">
+                <h1 class="card-title text-8xl"> No Products Found!</h1>
+            </div>
+        </div>
+        <% } %>
+
+
+        <!-- </div>
+        <div class="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-100 sm:px-6 lg:px-8">
+            <div class="flex flex-col items-center justify-center w-full space-y-8">
+                <div class="flex flex-col items-center justify-center">
+                    <div class="flex flex-col items-center justify-center w-full space-y-4">
+                        <article class="card product-item">
+                            <div class="card__image">
+                                <img src="https://www.storkz.com/media/catalog/product/cache/1/image/500x500/9df78eab33525d08d6e5fb8d27136e95/s/2/s20889739.jpg" alt="a rubber ducky" class="src">
+                            </div>
+                            <div class="card__content text-center">
+                                <h2 class="product__price text-8xl font-extrabold mt-8">$19.99</h2>
+                                <p class="product__description text-4xl mt-10 mb-10">A very intersting book</p>
+                            </div>
+                            <div class="card__actions text-3xl text-center">
+                                <button class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">Add to Cart</button>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </main>
+
+<%- include('../includes/end.ejs') %>

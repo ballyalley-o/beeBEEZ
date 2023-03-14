@@ -6,7 +6,7 @@ const errorController = require('./controllers/errors')
 
 const app = express();
 
-const PORT = 8000;
+const PORT = 3001;
 
 app.set("view engine", "ejs");
 app.set("views", "views");

@@ -4,7 +4,7 @@
     <%- include('../includes/navigation.ejs') %>
     <main>
         <% if (prods.length > 0) { %>
-        <div class="mr-4">
+        <div class="m-16">
             <div class="header flex flex-col content-center my-20">
                         <h1 class="hero text-8xl font-bold text-gray-900">Welcome</h1>
                         <p class="text-gray-500 text-2xl text-center">
@@ -12,32 +12,30 @@
                             </i> A not so-great shopping store
                         </p>
                 </div>
-            <div class="grid grid-cols-4 grid-rows-4 gap-10 m-10 ">
+            <div class="grid grid-cols-4 grid-rows-4 gap-10">
                 <% for (let product of prods) { %>
-                <div class="card col-span-1 max-w-md mx-auto h-full bg-base-100 shadow-2xl rounded-12 overflow-hidden">
-                    <div>
-                        <figure>
+                <div class="card bg-base-100 shadow-2xl rounded-12 overflow-hidden">
+                    <div class="sm:col-span-1 px-2 py-2 m-2">
+                        <figure class="sm:col-span-1 rounded-8 overflow-hidden">
                             <img
                                 src="<%= product.imageUrl %>"
                                 alt="<%= product.title %>"
-                                class="w-full " />
-                            </figure>
-                                <div class="px-2 py-2 content m-4">
-                                        <h2 class="card-title block">
-                                            <%= product.title %>
-                                        </h2>
-                                        <h4 class="card-price product__price text-5xl font-bold mt-2 text-center">
-                                            $ <%= product.price %>
-                                        </h4>
-                                    <div class="card-description grid grid-rows-2 my-4 mt-4 gap-2 item-center">
-                                        <p class="text-center mt-4"><%= product.description %></p>
-                                    </div>
-                                    <div class="card-actions">
-                                    <button
-                                        class="btn btn-primary"
-                                        >Add to Cart
-                                    </button>
-                                </div>
+                                class="w-full h-48 sm:h-56 object-cover" />
+                        </figure>
+                                <h2 class="card-title block text-2xl m-5">
+                                    <%= product.title %>
+                                </h2>
+                                <h4 class="card-price tssext-5xl font-bold mt-2 text-center">
+                                    $ <%= product.price %>
+                                </h4>
+                            <div class="card-description grid grid-rows-2 my-4 mt-4 gap-2 item-center">
+                                    <p class="text-center mt-4"><%= product.description %></p>
+                            </div>
+                            <div class="">
+                                <button
+                                    class="btn btn-primary"
+                                    >Add to Cart
+                                </button>
                             </div>
                         </div>
                     </div>

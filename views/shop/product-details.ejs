@@ -1,0 +1,22 @@
+<%- include('../includes/head.ejs') %>
+</head>
+<body>
+    <%- include('../includes/navigation.ejs') %>
+    <main>
+        <div class="flex grid min-h-screen items-center lg:grid-cols-4 sm:grid-cols-1 grid-rows-2 gap-4 m-20">
+            <div class="flex-1 p-16 grid-flow-row-">
+                <div class="col-span-2 sm:col-span-1">
+                    <h1 class="text-8xl"><%= product.title %></h1>
+                </div>
+                <div class="text-center">
+                    <h1 class="text-4xl m-5"><%= product.price %></h1>
+                    <p class="text-xl"><%= product.description %></p>
+                </div>
+            </div>
+            <!-- image size -->
+            <div class="col-span-2 lg:row-span-full sm:col-span-1">
+                <img src="<%= product.imageUrl %>" class="rounded-xl shadow-xl" alt="<%= product.title %>">
+            </div>
+        </div>
+    </main>
+    <%- include('../includes/end.ejs') %>

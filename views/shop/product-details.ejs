@@ -3,18 +3,25 @@
 <body>
     <%- include('../includes/navigation.ejs') %>
     <main>
-        <div class="flex grid min-h-screen items-center lg:grid-cols-4 sm:grid-cols-1 grid-rows-2 gap-4 m-20">
-            <div class="flex-1 p-16 grid-flow-row-">
+        <div class="card flex grid min-h-screen items-center lg:grid-cols-3 sm:grid-cols-1 grid-rows-2 gap-4 m-20">
+            <div class="container flex-1 col-span-2 p-16 grid-flow-col">
                 <div class="col-span-2 sm:col-span-1">
-                    <h1 class="text-8xl"><%= product.title %></h1>
+                    <h1 class="text-8xl font-bold text-right"><%= product.title %></h1>
+                    <hr>
                 </div>
-                <div class="text-center">
-                    <h1 class="text-4xl m-5"><%= product.price %></h1>
-                    <p class="text-xl"><%= product.description %></p>
+                <div class="text-right col-span-1 ">
+                    <div class="bg-base-300 justify-self-end p-5 ml-5 my-5 rounded-b-box">
+                        <h1 class="text-5xl font-bold m-5 text-white">$ <%= product.price %></h1>
+                    </div>
+                    <p class="text-2xl m-2"><%= product.description %></p>
+                    <form action="/cart" method="POST">
+                        <button class="btn btn-primary mt-5 text-xl text-white font-bold" type="submit">Add to Cart</button>
+                    </form>
+
                 </div>
             </div>
             <!-- image size -->
-            <div class="col-span-2 lg:row-span-full sm:col-span-1">
+            <div class="col-span-3 sm:col-span-1">
                 <img src="<%= product.imageUrl %>" class="rounded-xl shadow-xl" alt="<%= product.title %>">
             </div>
         </div>

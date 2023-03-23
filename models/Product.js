@@ -38,6 +38,12 @@ class Product {
        })
         fs.readFile(p,(err,fileContent)=> {})
     }
+    //price coma on 3rd digit
+    if (price) {
+      this.price = price.toFixed(2)
+      console.log(this.price)
+      return this.price;
+    }
 
     static fetchAll(cb) {
         getProductsFromFile(cb)

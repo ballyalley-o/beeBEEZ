@@ -1,5 +1,5 @@
 <header class="main-header">
-        <nav class="main-header__nav">
+        <nav class="main-header__nav fixed w-full top-0 z-10 mb-10">
             <div class="flex items-center justify-between flex-wrap bg-gray-800 p-6">
                 <div class="flex items-center flex-shrink-0 text-white mr-16">
                     <a class="<%= path === '/' ? 'active' : '' %>" href="/"><span class="font-semibold text-4xl tracking-tight">bee <i class="fa-solid fa-hippo">beez</i> </span></a>
@@ -13,30 +13,48 @@
                 </div>
                 <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
                     <div class="text-lg lg:flex-grow ">
-                        <a class="<%= path === '/' ? 'active main-header__list block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6' : 'main-header__list block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-6' %>" href="/">
+                        <a
+                            class="<%= path === '/' ? 'active main-header__list block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6' : 'main-header__list block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-6' %>"
+                            href="/"
+                            >
                             SHOP NOW
                         </a>
-                         <a class="<%= path === '/products' ? 'active main-header__list block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6' : 'main-header__list block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-6' %>" href="/products">
+                         <a
+                            class="<%= path === '/products' ? 'active main-header__list block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6' : 'main-header__list block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-6' %>"
+                            href="/products"
+                            >
                             Technology
                         </a>
-                        <a class="<%= path === '/cart' ? 'active main-header__list block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6' : 'main-header__list block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-6' %>" href="/cart">
+                        <a
+                            class="<%= path === '/cart' ? 'active main-header__list block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6' : 'main-header__list block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-6' %>"
+                            href="/cart"
+                            >
                             Cart
                         </a>
-                        <a class="<%= path === '/admin/add-product' ? 'active main-header__list block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6' : 'main-header__list block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-6' %>" href="admin/add-product">
+                        <a
+                            class="<%= path === '/admin/add-product' ? 'active main-header__list block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6' : 'main-header__list block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-6' %>"
+                            href="admin/add-product"
+                            >
                             Add Product
                         </a>
-                        <a class="<%= path === '/orders' ? 'active main-header__list block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6' : 'main-header__list block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-6' %>" href="/orders">
+                        <a
+                            class="<%= path === '/orders' ? 'active main-header__list block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6' : 'main-header__list block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-6' %>"
+                            href="/orders"
+                            >
                             Orders
                         </a>
-                        <a class="<%= path === '/admin/products' ? 'active main-header__list block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6' : 'main-header__list block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-6' %>" href="admin/products">
+                        <a
+                            class="<%= path === '/admin/products' ? 'active main-header__list block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6' : 'main-header__list block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-6' %>"
+                            href="admin/products"
+                            >
                             Admin
-                        </a>
-                        <a href="/" class="main-header__list block mt-4 lg:inline-block lg:mt-0 text-gray-200 hover:text-white mr-6">
-                            Dummy
                         </a>
                     </div>
                     <div>
-                        <a href="/business" class="text-lg inline-block px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">
+                        <a
+                            href="/business"
+                            class="text-lg inline-block px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0"
+                            >
                             BUSINESS
                         </a>
                     </div>

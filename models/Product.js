@@ -1,60 +1,39 @@
-const fs = require('fs')
-const path = require('path')
-
-
-const p = path.join(
-    path.dirname(require.main.filename),
-    "data",
-    "products.json"
-  );
-
-
-const getProductsFromFile = (cb) => {
-     fs.readFile(p, (err, fileContent) => {
-       if (err) {
-         cb([]);
-       } else {
-         cb(JSON.parse(fileContent));
-       }
-     });
-}
+const db = require('../helper/db')
+const Cart = require('./Cart.js')
 
 class Product {
-    constructor(title, imageUrl, price, description) {
+    constructor(id, title, imageUrl, price, description) {
+        this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
-        this.description = description;
         this.price = price;
+        this.description = description;
     }
+
 
     save() {
-      //create random id for each product
-      this.id = Math.floor(Math.random() * 10000).toString()
-       getProductsFromFile(products => {
-         products.push(this);
-         fs.writeFile(p, JSON.stringify(products), (err) => {
-           console.log(err);
-         });
-       })
-        fs.readFile(p,(err,fileContent)=> {})
-    }
-    //price coma on 3rd digit
-    if (price) {
-      this.price = price.toFixed(2)
-      console.log(this.price)
-      return this.price;
+      return db.execute(
+        //mysql query to insert into products table, the values of the product, also the ? are for cyber injection protection
+        //where they use the query from the array to attack the database
+        "INSERT INTO beeBEEZ.products (title, imageUrl, price, description) VALUES (?, ?, ?, ?)",
+      [
+        this.title,
+        this.price,
+        this.imageUrl,
+        this.description
+      ])
     }
 
-    static fetchAll(cb) {
-        getProductsFromFile(cb)
+    static deleteById(id) {
+
     }
 
-    static findById = (id, cb) => {
-      getProductsFromFile(products => {
-        const product = products.find(p => p.id === id);
-          console.log(product)
-          cb(product)
-      })
+    static fetchAll() {
+      return db.execute("SELECT * FROM beeBEEZ.products")
+    }
+
+    static findById(id) {
+      return db.execute("SELECT * FROM beeBEEZ.products WHERE products.id = ?", [id])
     }
 }
 

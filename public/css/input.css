@@ -73,8 +73,13 @@ main {
     font: inherit;
     border-radius: 2px;
 }
-
-
+ .card-title {
+     white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     max-width: 100px;
+     /* set your desired max-width */
+ }
 
 button {
     background-color: #78eed0;

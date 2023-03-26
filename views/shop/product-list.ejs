@@ -4,7 +4,7 @@
     <%- include('../includes/navigation.ejs') %>
     <main>
         <% if (prods.length > 0) { %>
-        <div class="m-16">
+        <div class="m-16 pt-20">
             <div class="header flex flex-col content-center my-20">
                         <h1 class="hero text-8xl font-bold text-gray-900">Welcome</h1>
                         <p class="text-gray-500 text-2xl text-center">
@@ -22,24 +22,23 @@
                                 alt="<%= product.title %>"
                                 class="w-full h-48 sm:h-56 object-cover" />
                         </figure>
-                                <h2 class="card-title block text-2xl m-5">
+                            <div class="px-2 py-2 content m-4">
+                                <h2 class="card-title block text-2xl m-5" id="prod-title">
                                     <%= product.title %>
                                 </h2>
-                                <h4 class="card-price text-2xl font-bold mt-2 text-center">
-                                    $ <%= product.price %>
+                                <h4 class="card-price text-5xl font-bold mt-2 text-center">
+                                   <%= product.price %>
                                 </h4>
+                            </div>
                             <div class="card-description block h-20 my-4 mt-4 gap-2 item-center">
                                     <p class="text-center mt-4"><%= product.description %></p>
                             </div>
-                            <div class="card-actions justify-start w-96">
+                            <div class="card-actions justify- w-96">
                                 <span class="">
-                                    <a href="/products/<%= product.id %>" class="btn">Details</a>
+                                    <a href="/products/cart/<%= product.id %>" class="btn">Details</a>
                                 </span>
-                                <span class="">
-                                    <form action="/add-to-cart" method="POST">
-                                        <input type="hidden" name="productId" value="<%= product.id %>">
-                                        <button class="btn btn-primary" type="submit">Add to Cart</button>
-                                    </form>
+                                <span class="block">
+                                    <%- include('../includes/add-to-cart.ejs', {product: product}) %>
                                 </span>
                             </div>
                         </div>

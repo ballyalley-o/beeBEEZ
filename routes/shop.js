@@ -4,29 +4,39 @@ const router = express.Router();
 const shopController =require('../controllers/shop')
 
 
+const baseUrl = "/products";
+
 //Method GET
 //URL /
 router.get("/", shopController.getIndex);
 
 //Method GET
 //URL /products
-router.get("/products", shopController.getProducts);
+router.get(baseUrl, shopController.getProducts);
 
 //Method DELETE
 //URL /products/delete
-router.get("/products/delete", shopController.getProducts);
+router.get(`${baseUrl}/delete`, shopController.getProducts);
 
 //Method GET
 //URL /products/:productId
-router.get("/products/:productId", shopController.getProduct);
+router.get(`${baseUrl}/cart/:productId`, shopController.getProduct);
 
 //Method GET
 //URL /cart
-router.get("/shop/cart", shopController.getCart);
+router.get('/cart', shopController.getCart);
+
+//Method POST
+//URL /cart
+router.post('/cart', shopController.postCart)
+
+//Method POST
+//URL /cart-delete-item
+router.post('/cart-delete-item', shopController.postCartDeleteProduct)
 
 //Method GET
 //URL /cart
-router.get("/orders", shopController.getOrders);
+router.get(`${baseUrl}/orders`, shopController.getOrders);
 
 //Method GET
 //URL /checkout

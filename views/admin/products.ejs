@@ -4,38 +4,45 @@
     <%- include('../includes/navigation.ejs') %>
     <main>
         <% if (prods.length > 0) { %>
-        <div class="mr-4">
+        <div class="m-16 pt-20">
             <div class="header flex flex-col content-center my-20">
-                        <h1 class="hero text-8xl font-bold text-gray-900">Welcome</h1>
+                        <h1 class="hero text-8xl font-bold text-gray-900">Edit/Delete</h1>
                         <p class="text-gray-500 text-2xl text-center">
                             <i class="fa-li fa fa-spinner fa-spin">
                             </i> A not so-great shopping store
                         </p>
                 </div>
-            <div class="grid grid-cols-4 grid-rows-4 gap-10 m-10 ">
+            <div class="grid lg:grid-cols-4 grid-rows-4 md:grid-cols-2 sm:grid-cols-1 gap-10">
                 <% for (let product of prods) { %>
-                <div class="card col-span-1 max-w-md mx-auto h-full bg-base-100 shadow-2xl rounded-12 overflow-hidden">
-                    <div>
-                        <figure>
+                <div class="card bg-base-100 shadow-2xl rounded-12">
+                    <div class="col-span-1 px-2 py-2 m-2">
+                        <figure class="sm:col-span-1 rounded-8">
                             <img
                                 src="<%= product.imageUrl %>"
                                 alt="<%= product.title %>"
-                                class="w-full" />
-                            </figure>
-                                <div class="px-2 py-2 content m-4">
-                                        <h2 class="card-title block">
-                                            <%= product.title %>
-                                        </h2>
-                                        <h4 class="card-price product__price text-5xl font-bold mt-2 text-center">
-                                            $ <%= product.price %>
-                                        </h4>
-                                    <div class="card-description grid grid-rows-2 my-4 mt-4 gap-2 item-center">
-                                        <p class="text-center mt-4"><%= product.description %></p>
-                                    </div>
-                                    <div class="card-actions">
-                                    <a href="/admin/edit-product"  class="btn btn-primary">Edit</a>
-                                    <a href="#"  class="btn btn-accent">Delete</a>
-                                </div>
+                                class="w-full h-48 sm:h-56 object-cover" />
+                        </figure>
+                            <div class="px-2 py-2 content m-4">
+                                <h2 class="card-title block text-2xl m-5" id="prod-title">
+                                    <%= product.title %>
+                                </h2>
+                                <h4 class="card-price text-5xl font-bold mt-2 text-center">
+                                   <%= product.price %>
+                                </h4>
+                            </div>
+                            <div class="card-description block h-20 my-4 mt-4 gap-2 item-center">
+                                    <p class="text-center mt-4"><%= product.description %></p>
+                            </div>
+                            <div class="card-actions justify- w-96">
+                                <span class="">
+                                    <a href="/admin/edit-product/<%= product.id %>?edit=true" class="btn btn-info text-white hover:bg-gray-800 hover:text-white font-bold">EDIT</a>
+                                </span>
+                                <span class="block">
+                                    <form action="/admin/delete-product" method="POST">
+                                        <input type="hidden" value="<%= product.id %>" name="productId">
+                                        <button type="submit" class="btn btn-error hover:bg-error hover:text-white font-bold">DELETE</button>
+                                    </form>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -49,29 +56,5 @@
             </div>
         </div>
         <% } %>
-
-
-        <!-- </div>
-        <div class="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-100 sm:px-6 lg:px-8">
-            <div class="flex flex-col items-center justify-center w-full space-y-8">
-                <div class="flex flex-col items-center justify-center">
-                    <div class="flex flex-col items-center justify-center w-full space-y-4">
-                        <article class="card product-item">
-                            <div class="card__image">
-                                <img src="https://www.storkz.com/media/catalog/product/cache/1/image/500x500/9df78eab33525d08d6e5fb8d27136e95/s/2/s20889739.jpg" alt="a rubber ducky" class="src">
-                            </div>
-                            <div class="card__content text-center">
-                                <h2 class="product__price text-8xl font-extrabold mt-8">$19.99</h2>
-                                <p class="product__description text-4xl mt-10 mb-10">A very intersting book</p>
-                            </div>
-                            <div class="card__actions text-3xl text-center">
-                                <button class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">Add to Cart</button>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div> -->
     </main>
-
 <%- include('../includes/end.ejs') %>

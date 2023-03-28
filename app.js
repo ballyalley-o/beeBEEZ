@@ -1,7 +1,7 @@
 const path = require('path')
 const express = require('express');
 const bodyParser = require('body-parser');
-const db = require('./helper/db')
+const sequelize = require('./helper/db')
 const logger = require('./helper/logger')
 require('colors')
 
@@ -28,4 +28,13 @@ app.use(shopRoutes);
 //handles errors
 app.use(errorController.notFound)
 
-app.listen(PORT)
+sequelize
+    .sync()
+    .then(result => {
+      console.log(result)
+      app.listen(PORT);
+    }).catch(err => {
+      console.log(err)
+    })
+
+

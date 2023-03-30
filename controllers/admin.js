@@ -23,20 +23,17 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  //added null for post edit prod
-  const product = new Product(
-                              null,
-                              title,
-                              price,
-                              imageUrl,
-                              description
-                              );
-  product
-    .save()
-    .then(() => {
-      res.redirect("/");
-    })
-    .catch(err => console.log(err));
+  Product.create({
+    title: title,
+    price: price,
+    imageUrl: imageUrl,
+    description: description
+  })
+  .then(result => {
+    console.log("Product created".green.inverse)
+    // console.log(result)
+  })
+  .catch(err => console.log(err))
 };
 
 //method GET
@@ -93,4 +90,4 @@ exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
   Product.deleteById(prodId);
   res.redirect('/admin/products')
-}
+};

@@ -31,7 +31,7 @@ app.use(errorController.notFound)
 sequelize
     .sync()
     .then(result => {
-      console.log(result)
+
       app.listen(PORT);
     }).catch(err => {
       console.log(err)

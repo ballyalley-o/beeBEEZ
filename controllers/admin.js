@@ -1,4 +1,5 @@
 const Product = require("../models/Product");
+const Member = require("../models/Member");
 
 const EDIT = "admin/edit-product";
 const PRODUCTS = "admin/products";
@@ -23,15 +24,16 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  Product.create({
+  req.member
+  .createProduct({
     title: title,
     price: price,
     imageUrl: imageUrl,
-    description: description
+    description: description,
   })
-  .then(result => {
-    console.log("Product created".green.inverse)
-    // console.log(result)
+  .then((result) => {
+    console.log('PRODUCT CREATED'.green.inverse)
+    res.redirect('/admin/products')
   })
   .catch(err => console.log(err))
 };
@@ -44,7 +46,9 @@ exports.getEditProduct = (req, res, next) => {
     return res.redirect('/')
   }
   const prodId = req.params.productId;
-  Product.findById(prodId, product => {
+  req.member.getProducts({where: {id: prodId}})
+  .then(products => {
+    const product = products[0];
     if (!product) {
       return res.redirect('/')
     }
@@ -55,6 +59,7 @@ exports.getEditProduct = (req, res, next) => {
       product: product
     });
   })
+  .catch(err => console.log(err))
 }
 
 exports.postEditProducts = (req, res, next) => {
@@ -76,18 +81,28 @@ exports.postEditProducts = (req, res, next) => {
 
 
 exports.getProducts = (req, res, next) => {
-    Product.fetchAll(products => {
-        res.render(PRODUCTS, {
-            prods: products,
-            path: 'admin/products',
-            pageTitle: 'Admin: Products'
-        })
+  req.member.getProducts()
+    .then(products => {
+      res.render(PRODUCTS, {
+        prods: products,
+        path: "admin/products",
+        pageTitle: "Admin: Products",
+      })
+    }).then(result => {
+      console.log("Logging in ADMIN...".white.inverse);
     })
-  console.log("Logging in ADMIN...".white.inverse);
+    .catch(err => {
+      console.log(err)
+    })
+
 }
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteById(prodId);
+  Product.findByPk(prodId)
+  .then(product => {
+    return product.destroy()
+  })
+  .catch(err => console.log(err))
   res.redirect('/admin/products')
 };

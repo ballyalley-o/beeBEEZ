@@ -32,11 +32,15 @@ router.post('/cart', shopController.postCart)
 
 //Method POST
 //URL /cart-delete-item
-router.post('/cart-delete-item', shopController.postCartDeleteProduct)
+router.post('/cart-delete-item', shopController.postCartDeleteProduct);
+
+//Method POST
+//URL /cart
+router.post(`/create-order`, shopController.postOrder);
 
 //Method GET
 //URL /cart
-router.get(`${baseUrl}/orders`, shopController.getOrders);
+router.get(`/orders`, shopController.getOrders);
 
 //Method GET
 //URL /checkout

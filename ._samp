@@ -1,0 +1,9 @@
+HOST_NAME=localhost
+PORT = 3001
+SSL_Enabled_domain=
+
+
+MONGODB_HOST=bally123.7dkc9jh.mongodb.net
+MONGODB_PORT=27017
+MONGODB_DB=beeBEEZ
+MONGODB_PASSWD=bally123

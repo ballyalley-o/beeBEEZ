@@ -13,7 +13,7 @@ const DETAILS = "shop/product-details";
 //method POST
 //url
 exports.getProducts = (req, res, next) => {
-  Product.findAll()
+  Product.fetchAll()
     .then(products => {
       res.render(SHOP, {
         prods: products,
@@ -42,7 +42,7 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.findAll()
+  Product.fetchAll()
   .then(products => {
      res.render(INDEX, {
        prods: products,

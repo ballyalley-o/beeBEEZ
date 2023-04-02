@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const sequelize = require('../helper/db')
+const sequelize = require('../helper/db-sql.js_bu')
 
 const Member = sequelize.define('member', {
     id: {

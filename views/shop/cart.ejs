@@ -8,9 +8,9 @@
                 <ul class="card">
                     <% products.forEach(p => { %>
                         <li>
-                            <p><%= p.title %> Quantity: (<%= p.cartItem.quantity %>)</p>
+                            <p><%= p.title %> Quantity: (<%= p.quantity %>)</p>
                             <form action="/cart-delete-item" method="POST">
-                                <input type="hidden" name="productId" value="<%= p.id %>">
+                                <input type="hidden" name="productId" value="<%= p._id %>">
                                 <button class="btn btn-error" type="submit">DELETE</button>
                             </form>
                         </li>
@@ -23,7 +23,11 @@
                 </div>
             </div>
         <% } else { %>
-            <h1 class="text-center display-1 text-3xl text-accent">No products found</h1>
+            <div class="pt-40">
+                <h1 class="text-center display-1 text-8xl text-white pb-10">No products in your cart</h1>
+                <h1 class="text-center display-1 text-8xl text-white mb-5">🛒</h1>
+                <p class="text-center text-4xl text-white"><i>..fill me up</i></p>
+            </div>
         <% } %>
     </main>
     <%- include('../includes/end.ejs') %>

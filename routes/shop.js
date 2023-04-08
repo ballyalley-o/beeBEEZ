@@ -26,9 +26,9 @@ router.get(`${baseUrl}/:productId`, shopController.getProduct);
 // //URL /cart
 // router.get('/cart', shopController.getCart);
 
-//Method POST
-//URL /cart
-router.post('/cart', shopController.postCart)
+// //Method POST
+// //URL /cart
+// router.post('/cart', shopController.postCart)
 
 // //Method POST
 // //URL /cart-delete-item

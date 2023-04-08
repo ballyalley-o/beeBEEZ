@@ -1,6 +1,18 @@
 </body>
 <script>
 
+// const submitBtn = document.getElementById("addBtn")
+// addBtn.addEventListener("click", function (e) {
+
+//     //convert to number
+//     let price = document.getElementById("price").value
+//     const priceNum = parseFloat(price.replace(/[^0-9.-]+/g,""))
+//     document.getElementById("price").value = priceNum
+
+//      e.preventDefault()
+// })
+
+
 const numFormat = document.getElementById("price")
 
 numFormat.addEventListener("input", function (e) {
@@ -17,7 +29,11 @@ numFormat.addEventListener("input", function (e) {
         this.value = this.value.slice(0, -2) + "." + this.value.slice(-2)
     }
 })
-
+//convert price when showed in the page
+const price = document.getElementById("price-show").textContent;
+//add $ and commas to the price text content
+const priceNum = price.replace(/[^0-9.-]+/g,"")
+document.getElementById("price-show").textContent = "$ " + priceNum.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
 </script>
 

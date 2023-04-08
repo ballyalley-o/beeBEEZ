@@ -1,5 +1,5 @@
 const Product = require('../models/Product');
-const Order = require('../models/Order');
+
 require('colors')
 
 const SHOP = "shop/product-list"
@@ -12,7 +12,7 @@ const DETAILS = "shop/product-details";
 //method POST
 //url
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
     .then(products => {
       res.render(SHOP, {
         prods: products,
@@ -29,7 +29,7 @@ exports.getProducts = (req, res, next) => {
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
   Product
-    .findByPk(prodId)
+    .findById(prodId)
     .then(product => {
       res.render(DETAILS, {
         pageTitle: product.title,
@@ -41,7 +41,7 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
   .then(products => {
      res.render(INDEX, {
        prods: products,
@@ -57,18 +57,13 @@ exports.getIndex = (req, res, next) => {
 exports.getCart = (req, res, next) => {
   req.member
   .getCart()
-  .then(cart => {
-    return cart
-      .getProducts()
-      .then(products => {
+  .then(products => {
         res.render(CART, {
         path: "/cart",
         pageTitle: "Cart",
         products: products
         });
       })
-      .catch(err => console.log(err))
-  })
   .catch(err => {
     console.log(err)
   })
@@ -84,57 +79,22 @@ exports.postCart = (req, res, next) => {
     console.log(result);
     res.redirect("/cart");
   })
-  // let fetchedCart;
-  // let newQuantity = 1;
-  // req.member
-  // .getCart()
-  // .then(cart => {
-  //   fetchedCart = cart;
-  //   return cart.getProducts({where: {id: prodId}})
-  // })
-  // .then(products => {
-  //   let product;
-  //   if (products.length > 0) {
-  //     product = products[0]
-  //   }
-  //   if (product) {
-  //     const oldQuantity = product.cartItem.quantity;
-  //     newQuantity = oldQuantity + 1;
-  //     return product;
-  //   }
-  //   return Product.findByPk(prodId)
-  // })
-  // .then(product => {
-  //    return fetchedCart.addProduct(product, {
-  //      through: { quantity: newQuantity },
-  //    });
-  // })
-  // .then(() => {
-  //   res.redirect("/cart");
-  // })
-  // .catch(err => {
-  //   console.log(err)
-  // })
 }
 
 exports.postCartDeleteProduct = (req, res, next) => {
   //look for product Id in the request body
   const prodId = req.body.productId;
   req.member
-    .getCart()
-    .then(cart => {
-      return cart.getProducts({ where: { id: prodId } })
+    .deleteItemFromCart(prodId)
+    .then((result) => {
+      console.log(`DELETED ${req.body.productId}`.red.inverse)
+      res.redirect("/cart");
     })
-    .then(products => {
-      const product = products[0];
-      return product.cartItem.destroy();
-    })
-    .then(result => {
-      res.redirect('/cart')
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+
   // //find the product in the Product model
   // Product.findByPk(prodId, product => {
   //   //delete the product from the cart
@@ -147,27 +107,7 @@ exports.postCartDeleteProduct = (req, res, next) => {
 exports.postOrder = (req, res, next) => {
   let fetchedCart;
   req.member
-    .getCart()
-    .then(cart => {
-      fetchedCart = cart;
-      return cart.getProducts()
-    })
-    .then(products => {
-      return req.member
-              .createOrder()
-              .then(order => {
-                return order.addProducts(products.map(product => {
-                  product.orderItem = {quantity: product.cartItem.quantity};
-                  return product;
-                })
-                )
-              })
-              .catch(err => console.log(err))
-    })
-    .then(result => {
-      return fetchedCart.setProducts(null)
-
-    })
+    .addOrder()
     .then(result => {
       res.redirect("/orders");
     })
@@ -178,7 +118,7 @@ exports.postOrder = (req, res, next) => {
 
 exports.getOrders = (req, res, next) => {
   req.member
-    .getOrders({include: ['products']})
+    .getOrders()
     .then(orders => {
       res.render(ORDERS, {
         path: "/orders",

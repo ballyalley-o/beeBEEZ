@@ -31,7 +31,7 @@
                                         NZ$
                                     </span>
                                     <span class="justify-end pl-15">
-                                        <h4 class="card-price text-5xl text-primary font-bold mt-2">
+                                        <h4 id="price-show" class="card-price text-5xl text-primary font-bold mt-2">
                                             <%= product.price %>
                                         </h4>
                                     </span>
@@ -42,7 +42,7 @@
                             </div>
                             <div class="card-actions justify- w-96">
                                 <span class="">
-                                    <a href="/products/cart/<%= product._id %>" class="btn">Details</a>
+                                    <a href="/products/<%= product._id %>" class="btn">Details</a>
                                 </span>
                                 <span class="block">
                                     <%- include('../includes/add-to-cart.ejs', {product: product}) %>
@@ -54,9 +54,11 @@
                 </div>
             </div>
             <% } else { %>
-        <div class="container text-center mt-40">
-            <div class="card hero m-20 ">
-                <h1 class="card-title text-8xl"> No Products Found!</h1>
+        <div class="container mt-40">
+             <div class="pt-40">
+                <h1 class="text-center display-1 text-8xl text-white pb-10">No products</h1>
+                <h1 class="text-center display-1 text-8xl text-white mb-5">🛒</h1>
+                <p class="text-center text-4xl text-white"><i>we dont have anything</i></p>
             </div>
         </div>
         <% } %>

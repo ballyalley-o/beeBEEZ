@@ -6,7 +6,7 @@
         <% if (prods.length > 0) { %>
         <div class="m-16 pt-20">
             <div class="header flex flex-col content-center my-20">
-                        <h1 class="hero text-8xl font-bold text-gray-900">Welcome</h1>
+                        <h1 class="hero text-8xl font-bold">Welcome</h1>
                         <p class="text-gray-500 text-2xl text-center">
                             <i class="fa-li fa fa-spinner fa-spin">
                             </i> A not so-great shopping store
@@ -14,36 +14,39 @@
                 </div>
             <div class="grid lg:grid-cols-4 grid-rows-4 md:grid-cols-2 sm:grid-cols-1 gap-10">
                 <% for (let product of prods) { %>
-                <div class="card bg-base-100 shadow-2xl rounded-12 overflow-hidden">
+                <div class="card bg-white shadow-2xl rounded-12 overflow-hidden">
                     <div class="sm:col-span-1 px-2 py-2 m-2">
-                        <figure class="sm:col-span-1 rounded-8 overflow-hidden">
+                        <figure class="sm:col-span-1 rounded-8 h-64 overflow-hidden">
                             <img
                                 src="<%= product.imageUrl %>"
                                 alt="<%= product.title %>"
-                                class="w-full h-48 sm:h-56 object-cover" />
+                                class="w-full sm:h-56 object-cover" />
                         </figure>
                         <div class="w-full px-2 py-2 content m-4">
-                                <h2 class="card-title block text-2xl m-5" id="prod-title">
+                                <h2 class="card-title block text-primary text-2xl m-5" id="prod-title">
                                     <%= product.title %>
                                 </h2>
-                                <div class="w-96 block text-center">
-                                    <span class="inline-flex text-2xl p-4 badge bg-error justify-center ">
+                                <div class="inline-flex w-96 justify-center block">
+                                    <span class="inline-block text-2xl text-error p-4 justify-normal">
                                         NZ$
-                                        </span>
-                                        <span>
-                                            <h4 class="card-price text-5xl font-bold mt-2 text-center">
+                                    </span>
+                                    <span class="justify-end pl-15">
+                                        <h4 class="card-price text-5xl text-primary font-bold mt-2">
                                             <%= product.price %>
                                         </h4>
-                                </span>
+                                    </span>
                                 </div>
                             </div>
-                            <div class="card-description block h-20 my-4 mt-4 gap-2 block item-center">
+                            <div class="card-description block text-primary h-20 my-4 mt-4 gap-2 block item-center">
                                     <p class="text-center mt-4"><%= product.description %></p>
                             </div>
-                            <div class="justify-start w-96">
-                                <div class="block">
-                                <%- include('../includes/add-to-cart.ejs', {product: product}) %>
-                                </div>
+                            <div class="card-actions justify- w-96">
+                                <span class="">
+                                    <a href="/products/cart/<%= product._id %>" class="btn">Details</a>
+                                </span>
+                                <span class="block">
+                                    <%- include('../includes/add-to-cart.ejs', {product: product}) %>
+                                </span>
                             </div>
                         </div>
                     </div>

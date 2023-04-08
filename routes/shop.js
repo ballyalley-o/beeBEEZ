@@ -18,17 +18,17 @@ router.get(baseUrl, shopController.getProducts);
 // //URL /products/delete
 // router.get(`${baseUrl}/delete`, shopController.getProducts);
 
-// //Method GET
-// //URL /products/:productId
-// router.get(`${baseUrl}/cart/:productId`, shopController.getProduct);
+//Method GET
+//URL /products/:productId
+router.get(`${baseUrl}/:productId`, shopController.getProduct);
 
 // //Method GET
 // //URL /cart
 // router.get('/cart', shopController.getCart);
 
-// //Method POST
-// //URL /cart
-// router.post('/cart', shopController.postCart)
+//Method POST
+//URL /cart
+router.post('/cart', shopController.postCart)
 
 // //Method POST
 // //URL /cart-delete-item

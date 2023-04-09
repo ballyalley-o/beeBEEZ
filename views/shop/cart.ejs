@@ -4,24 +4,38 @@
     <%- include('../includes/navigation.ejs') %>
     <main>
         <% if (products.length > 0) { %>
-            <div class="container m-10 pt-20">
-                <ul class="card">
-                    <% products.forEach(p => { %>
-                        <li>
-                            <p><%= p.title %> Quantity: (<%= p.quantity %>)</p>
-                            <form action="/cart-delete-item" method="POST">
-                                <input type="hidden" name="productId" value="<%= p._id %>">
-                                <button class="btn btn-error" type="submit">DELETE</button>
+         <div class="container m-20">
+             <div class="hero min-h-screen ">
+                <div class="hero-content">
+                    <div class="max-w-xl w-96 bg-gray-400 border-2xl rounded-2xl">
+                        <ul class="p-10">
+                            <% products.forEach(p => { %>
+                                <div class="max-w-xl w-96 bg-gray-400 border-2xl rounded-2xl"></div>
+                                <li>
+                                    <span class="inline-block">
+                                        <h2 class="text-2xl text-base-300 p-2 font-bold"><%= p.productId.title %></h2>
+                                        <h3 class="text-lg text-base-300 p-2">Quantity: <span class="badge text-base-300 badge-accent font-bold "><%= p.quantity %></span></h3>
+                                    </span>
+                                    <span class="flex flex-col items-end p-2">
+                                        <form action="/cart-delete-item" method="POST">
+                                            <input type="hidden" name="productId" value="<%= p.productId._id %>">
+                                            <button class="btn btn-error text-base-300 hover:text-white" type="submit">DELETE</button>
+                                        </form>
+                                    </span>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    <hr>
+                        <div class="flex flex-col items-center block py-5">
+                            <form action="/create-order" method="POST">
+                                <button type="submit" class="text-black border bg-yellow-500 border-secondary-500 rounded-xl hover:bg-base-300 hover:text-white active:bg-primary-600 font-bold uppercase px-8 py-3 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">ORDER</button>
                             </form>
-                        </li>
-                    <% }) %>
-                </ul>
-                <div class="item-center pt-10">
-                    <form action="/create-order" method="POST">
-                        <button type="submit" class="btn btn-error bg-error">ORDER</button>
-                    </form>
+                        </div>
+                    </div>
+
                 </div>
             </div>
+         </div>
         <% } else { %>
             <div class="pt-40">
                 <h1 class="text-center display-1 text-8xl text-white pb-10">No products in your cart</h1>

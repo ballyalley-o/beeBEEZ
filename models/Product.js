@@ -17,8 +17,13 @@ const ProductSchema = new Schema({
  imageUrl: {
   type: String,
   required: true
+ },
+ memberId: {
+  type: Schema.Types.ObjectId,
+  ref: 'Member',
  }
-},{
+},
+{
   timestamps: true,
   collection: 'Products'
 })

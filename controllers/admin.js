@@ -13,7 +13,8 @@ exports.getAddProduct = (req, res, next) => {
   res.render(EDIT, {
     pageTitle: "Add Product",
     path: "admin/add-product",
-    editing: false
+    editing: false,
+    isAuthenticated: req.session.isLoggedIn,
   });
   console.log("Logging in ADD-PRODUCT...".white.inverse);
 };
@@ -27,9 +28,10 @@ exports.postAddProduct = (req, res, next) => {
   const description = req.body.description;
   const product = new Product({
                                 title: title,
-                                price: price.replace(/\D/g, ''),
+                                price: price.replace(/\$/g, ''),
                                 description: description,
-                                imageUrl: imageUrl
+                                imageUrl: imageUrl,
+                                memberId: req.member
                               });
   product
     .save()
@@ -40,14 +42,6 @@ exports.postAddProduct = (req, res, next) => {
     })
     .catch((err) => console.log(err));
 };
-  // req.member
-  // .createProduct({
-  //   title: title,
-  //   price: price,
-  //   imageUrl: imageUrl,
-  //   description: description,
-  // })
-
 
 //method GET
 //url /edit-product/:productId
@@ -66,7 +60,8 @@ exports.getEditProduct = (req, res, next) => {
       pageTitle: "Edit Product",
       path: EDIT,
       editing: editMode,
-      product: product
+      product: product,
+      isAuthenticated: req.session.isLoggedIn,
     });
   })
   .catch(err => console.log(err))
@@ -92,9 +87,6 @@ exports.postEditProducts = (req, res, next) => {
       res.redirect("/admin/products");
     })
     .catch(err => console.log(err))
-
-
-
 }
 
 
@@ -105,6 +97,7 @@ exports.getProducts = (req, res, next) => {
         prods: products,
         path: "admin/products",
         pageTitle: "Admin: Products",
+        isAuthenticated: req.session.isLoggedIn
       })
     }).then(result => {
       console.log("Logging in ADMIN...".white.inverse);

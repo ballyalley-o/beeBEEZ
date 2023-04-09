@@ -5,29 +5,38 @@
     <main>
         <% if (orders.length <= 0) { %>
          <div class="text-center m-auto">
-                    <h1 class="card-title text-8xl mt-10">Your CART is EMPTY</h1>
-                    <span class="text-8xl">😢</span>
-                    <p class="card-text">come'on fill me up... </p>
+                <h1 class="card-title text-8xl mt-10">Your CART is EMPTY</h1>
+                <span class="text-8xl">😢</span>
+                <p class="card-text">come'on fill me up... </p>
 
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-20">
-                        <a href="/">back to home</a>
-                    </button>
-                </div>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-20">
+                    <a href="/">back to home</a>
+                </button>
+            </div>
         <% } else { %>
-            <div class="container m-auto text-center pt-20">
-                <ul class="card card-body border-2xl">
+        <div class="hero min-h-screen w-full pt-10">
+                <ul class="m-5">
                     <% orders.forEach(order => { %>
-                        <li class="card card-body">
-                            <h1 class="card card-title text-2xl font-bold"><%= order._id %></h1>
-                                <ul>
-                                    <% order.items.forEach(product => { %>
-                                        <li><%= product.title %> (<%= product.quantity %>)</li>
-                                    <% }) %>
-                                </ul>
+                        <li class="p-5">
+                            <div class="max-w-xl w-full p-10 bg-gray-300 border-2xl rounded-2xl">
+                                <span class="inline-block">
+                                    <div class="bg-white-500 border border-slate-600 rounded-lg p-2">
+                                        <h1 class="text-2xl text-base-300 p-2 m-1 font-bold"><span class="bg-yellow-500 px-3 py-2 rounded-lg">Order#</span> <%= order._id %></h1>
+                                    </div>
+                                    <div class="p-2 text-base-300">
+                                        <ul>
+                                            <% order.products.forEach(p => { %>
+                                                <li class="flex flex-col m-1 justify-around"><span class="inline-block text-xl"><b><%= p.product.title %></b></span><span class="inline badge content-right rounded text-base-300 badge-outline font-bold">Quantity: <b><%= p.quantity %></b></span></li>
+                                                <hr>
+                                            <% }) %>
+                                        </ul>
+                                    </div>
+                                </span>
+                            </div>
                         </li>
                     <% }) %>
                 </ul>
-            </div>
-            <% } %>
+        </div>
+    <% } %>
     </main>
     <%- include('../includes/end.ejs') %>

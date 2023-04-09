@@ -16,16 +16,29 @@
                     <div class="m-10">
                         <p class="text-2xl m-2"><%= product.description %></p>
                     </div>
-                    <form action="/cart" method="POST">
+                    <% if (isAuthenticated) { %>
+                        <form action="/cart" method="POST">
+                            <input type="hidden" name="productId" value="<%= product._id %>">
+                            <button class="btn-lg btn-accent text-accent px-5 bg-white hover:bg-accent-800 rounded-lg hover:text-white font-bold" type="submit"><b>ADD TO CART</b></button>
+                        </form>
+                    <% } else { %>
+                            <a
+                                href="/login">
+                                <button class="btn-lg btn-accent text-accent px-5 bg-white hover:bg-accent-800 rounded-lg hover:text-white font-bold">
+                                    <b>LOGIN</b>
+                                </button>
+                            </a>
+                    <% } %>
+                    <!-- <form action="/cart" method="POST">
                         <button
                             class="btn btn-accent mt-5 text-xl text-accent hover:bg-accent-800 hover:text-white font-bold" type="submit">Add to Cart</button>
                         <div class="input" type="hidden" name="prodId" value="<%= product._id %>"></div>
-                    </form>
+                    </form> -->
                 </div>
             </div>
             <!-- image size -->
-            <div class="col-span-3 sm:col-span-1">
-                <img src="<%= product.imageUrl %>" class="rounded-xl shadow-xl" alt="<%= product.title %>">
+            <div class="col-span-3 sm:col-span-1 ">
+                <img src="<%= product.imageUrl %>" class="rounded-xl shadow-xl transition duration-300 ease-in-out hover:scale-105" alt="<%= product.title %>">
             </div>
         </div>
     </main>

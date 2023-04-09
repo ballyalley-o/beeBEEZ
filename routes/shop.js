@@ -22,25 +22,25 @@ router.get(baseUrl, shopController.getProducts);
 //URL /products/:productId
 router.get(`${baseUrl}/:productId`, shopController.getProduct);
 
-// //Method GET
-// //URL /cart
-// router.get('/cart', shopController.getCart);
+//Method GET
+//URL /cart
+router.get('/cart', shopController.getCart);
 
-// //Method POST
-// //URL /cart
-// router.post('/cart', shopController.postCart)
+//Method POST
+//URL /cart
+router.post('/cart', shopController.postCart)
 
-// //Method POST
-// //URL /cart-delete-item
-// router.post('/cart-delete-item', shopController.postCartDeleteProduct);
+//Method POST
+//URL /cart-delete-item
+router.post('/cart-delete-item', shopController.postCartDeleteProduct);
 
-// //Method POST
-// //URL /cart
-// router.post(`/create-order`, shopController.postOrder);
+//Method POST
+//URL /cart
+router.post(`/create-order`, shopController.postOrder);
 
-// //Method GET
-// //URL /cart
-// router.get(`/orders`, shopController.getOrders);
+//Method GET
+//URL /cart
+router.get(`/orders`, shopController.getOrders);
 
 // //Method GET
 // //URL /checkout

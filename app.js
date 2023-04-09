@@ -2,8 +2,24 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
+const {
+  DATABASE,
+  logMsg,
+  status1,
+  status2,
+  serverLog,
+} = require("./helper/logger");
 require('dotenv').config();
 require('colors')
+const DBURL = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PW}@${process.env.MONGODB_HOST}/${process.env.MONGODB_DB}`;
+const store = new MongoDBStore({
+  uri: DBURL,
+  collection: 'Sessions'
+})
+
+
 
 const ObjectId = require('mongodb').ObjectId;
 const errorController = require('./controllers/errors');
@@ -11,26 +27,43 @@ const Member = require('./models/Member');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DBURL = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PW}@${process.env.MONGODB_HOST}/${process.env.MONGODB_DB}`;
+
 
 app.set("view engine", "ejs");
 app.set("views", "views");
 
 const adminData = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
+const authRoutes = require("./routes/auth");
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+                  secret: 'secret',
+                  resave: false,
+                  saveUninitialized: false,
+                  store: store
+                }))
 
-  console.log(
-    `Server is listening to PORT: ${PORT}...`.blue.inverse
-  );
+app.use((req, res, next) => {
+  if (!req.session.member) {
+    return next();
+  }
+  Member.findById(req.session.member._id)
+    .then((member) => {
+      req.member = member;
+      next();
+    })
+    .catch((err) => console.log(err));
+});
+
+  console.log(serverLog);
 
 app.use((req, res, next) => {
   //if there is a member, find it in the database
-    Member.findById("643179f3f7cdc2db16ece441")
+    Member.findById("643227a193e6d7e18ded12a9")
       .then((member) => {
-        req.member = member;
+        req.session.member = member;
         next();
       })
       .catch((err) => console.log(err));
@@ -39,17 +72,12 @@ app.use((req, res, next) => {
 
 app.use('/admin', adminData);
 app.use(shopRoutes);
+app.use(authRoutes);
 
 //handles errors
 app.use(errorController.notFound)
 
-// mongoConnect(() => {
-//   app.listen(PORT);
-// })
 
-const logMsg = `DATABASE CONNECTION STATUS: `
-const status1 = ` CONNECTED `.green.inverse
-const status2 = ` FAILED `.red.inverse
 
 mongoose
   .connect(
@@ -59,17 +87,22 @@ mongoose
       useUnifiedTopology: true
     },
     //console log if connected
+    console.log("DATABASE: ", DATABASE.bgMagenta),
     console.log(logMsg, status1)
   )
   .then(result => {
-    const member = new Member({
-        name: 'Bally',
-        email: 'bally@testy.com',
-        cart: {
-          items: []
-        }
+    Member.findOne().then(member => {
+      if (!member) {
+        const member = new Member({
+          name: "Bally",
+          email: "bally@testy.com",
+          cart: {
+            items: [],
+          },
+        });
+         member.save();
+      }
     })
-    member.save()
     app.listen(PORT)
   })
   .catch(err => {

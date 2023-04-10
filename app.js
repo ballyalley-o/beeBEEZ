@@ -4,6 +4,9 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
+const csrf = require('csurf');
+const flash = require('connect-flash');
+
 const {
   DATABASE,
   logMsg,
@@ -18,7 +21,7 @@ const store = new MongoDBStore({
   uri: DBURL,
   collection: 'Sessions'
 })
-
+const csrfProtect = csrf()
 
 
 const ObjectId = require('mongodb').ObjectId;
@@ -45,6 +48,8 @@ app.use(session({
                   store: store
                 }))
 
+app.use(csrfProtect)
+app.use(flash())
 app.use((req, res, next) => {
   if (!req.session.member) {
     return next();
@@ -57,18 +62,14 @@ app.use((req, res, next) => {
     .catch((err) => console.log(err));
 });
 
-  console.log(serverLog);
-
+//middleware to pass to all routes, protect to csrf attacks, for authentification
 app.use((req, res, next) => {
-  //if there is a member, find it in the database
-    Member.findById("643227a193e6d7e18ded12a9")
-      .then((member) => {
-        req.session.member = member;
-        next();
-      })
-      .catch((err) => console.log(err));
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.csrfToken = req.csrfToken();
+  next();
 })
 
+  console.log(serverLog);
 
 app.use('/admin', adminData);
 app.use(shopRoutes);
@@ -81,28 +82,14 @@ app.use(errorController.notFound)
 
 mongoose
   .connect(
-    //use try and catch
     DBURL,
     { useNewUrlParser: true,
       useUnifiedTopology: true
     },
-    //console log if connected
     console.log("DATABASE: ", DATABASE.bgMagenta),
     console.log(logMsg, status1)
   )
   .then(result => {
-    Member.findOne().then(member => {
-      if (!member) {
-        const member = new Member({
-          name: "Bally",
-          email: "bally@testy.com",
-          cart: {
-            items: [],
-          },
-        });
-         member.save();
-      }
-    })
     app.listen(PORT)
   })
   .catch(err => {

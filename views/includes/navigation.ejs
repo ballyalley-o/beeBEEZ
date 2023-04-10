@@ -57,6 +57,7 @@
                     <div>
                          <% if (isAuthenticated) { %>
                         <form action="/logout" method="POST">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <button
                                 type="submit"
                                 class="text-lg inline-block px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0"
@@ -67,9 +68,15 @@
                         <% } else { %>
                             <a
                                 href="/login"
-                                class="text-lg inline-block px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0"
+                                class="text-lg inline-block px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0 mr-1"
                                 >
                                 LOGIN
+                            </a>
+                             <a
+                                href="/signup"
+                                class="text-lg inline-block px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0"
+                                >
+                                SIGNUP
                             </a>
                         <% } %>
                     </div>

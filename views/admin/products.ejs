@@ -46,6 +46,7 @@
                                 </span>
                                 <span class="block">
                                     <form action="/admin/delete-product" method="POST">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                         <input type="hidden" value="<%= product._id %>" name="productId">
                                         <button type="submit" class="btn btn-error text-base-300 hover:bg-error hover:text-white font-bold">DELETE</button>
                                     </form>

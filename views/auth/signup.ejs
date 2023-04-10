@@ -6,9 +6,18 @@
         <% if (errorMessage) { %>
             <div class="message message-error mt-20 ease-in-out"> <h3><%= errorMessage %></h3></div>
         <% } %>
-      <form action="/login" class="product-form w-full" method="POST">
+      <form action="/signup" class="product-form w-full" method="POST">
        <div class="card parent-div-input flex items-center mt-20">
         <div class="card-body center w-96">
+        <div class="form-control mb-10 w-full">
+            <label for="name" class="text-gray-500 font-bold mb-6 md:mb-0 pr-4">NAME</label>
+            <input
+                type="name"
+                name="name"
+                id="name"
+                class="p-2 rounded-lg"
+                >
+        </div>
         <div class="form-control mb-10 w-full">
             <label for="email" class="text-gray-500 font-bold mb-6 md:mb-0 pr-4">E-MAIL</label>
             <input
@@ -30,10 +39,26 @@
                 class="p-2 rounded-lg"
                 >
         </div>
+         <div class="form-control mb-10 w-full">
+            <label
+            for="confirmPassword"
+            class="text-gray-500 font-bold mb-6 md:mb-0 pr-4">CONFIRM PASSWORD
+            </label>
+            <input
+                type="password"
+                name="confirmPassword"
+                id="confirmPassword"
+                class="p-2 rounded-lg"
+                >
+        </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button type="submit" class="shadow mt-10 bg-orange-500 hover:bg-yellow-400 focus:shadow-outline focus:outline-none text-white hover:text-black font-bolder py-2 px-4 rounded">
-               LOGIN
+               SIGN-UP
             </button>
+
+            <div class="text-center mt-10">
+                <a href="/login" class="text-center text-yellow-500 hover:text-blue-700">Already have an account?</a>
+            </div>
         </div>
         </div>
       </form>

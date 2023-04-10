@@ -17,8 +17,11 @@
     "tailwindcss": "^3.2.7"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "connect-flash": "^0.1.1",
     "connect-mongodb-session": "^3.1.1",
+    "csurf": "^1.11.0",
     "daisyui": "^2.51.3",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",
@@ -28,6 +31,7 @@
     "mongoose": "^7.0.3",
     "morgan": "^1.10.0",
     "mysql2": "^3.2.0",
-    "sequelize": "^6.30.0"
+    "sequelize": "^6.30.0",
+    "sweetalert2": "^11.7.3"
   }
 }

@@ -2,35 +2,46 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const MemberSchema = new Schema({
+const MemberSchema = new Schema(
+  {
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     email: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
+      unique: true,
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        "Please add a valid email",
+      ],
+    },
+    password: {
+      type: String,
+      required: true
     },
     cart: {
-        items: [
-            {
-                productId: {
-                            type: Schema.Types.ObjectId,
-                            ref: 'Product',
-                            required: true
-                            },
-                quantity: {
-                            type: Number,
-                            required: true
-                          }
-            }
-        ]
-    }
-},
-{
+      items: [
+        {
+          productId: {
+            type: Schema.Types.ObjectId,
+            ref: "Product",
+            required: true,
+          },
+          quantity: {
+            type: Number,
+            required: true,
+          },
+        },
+      ],
+    },
+  },
+  {
     timestamps: true,
-    collection: 'Members'
-})
+    collection: "Members",
+  }
+);
 
 MemberSchema.methods.addToCart = function(product) {
         let cartProductIndex, updatedCartItems;

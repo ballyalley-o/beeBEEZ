@@ -63,6 +63,7 @@
         <% if (editing) { %>
             <input type="hidden" name="productId" value="<%= product._id %>">
         <% } %>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <button type="submit" id="addBtn" class="shadow mt-10 bg-orange-500 hover:bg-yellow-400 focus:shadow-outline focus:outline-none text-white hover:text-black font-bolder py-2 px-4 rounded">
             <% if (editing) { %>UPDATE PRODUCT<% } else { %>ADD TO CART<% } %></button>
         </div>

@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const router = express.Router();
 const shopController =require('../controllers/shop')
+const protect = require('../middleware/auth-protect')
 
 
 const baseUrl = "/products";
@@ -24,27 +25,27 @@ router.get(`${baseUrl}/:productId`, shopController.getProduct);
 
 //Method GET
 //URL /cart
-router.get('/cart', shopController.getCart);
+router.get("/cart", protect, shopController.getCart);
 
 //Method POST
 //URL /cart
-router.post('/cart', shopController.postCart)
+router.post("/cart", protect, shopController.postCart);
 
 //Method POST
 //URL /cart-delete-item
-router.post('/cart-delete-item', shopController.postCartDeleteProduct);
+router.post("/cart-delete-item", protect, shopController.postCartDeleteProduct);
 
 //Method POST
 //URL /cart
-router.post(`/create-order`, shopController.postOrder);
+router.post(`/create-order`, protect, shopController.postOrder);
 
 //Method GET
 //URL /cart
-router.get(`/orders`, shopController.getOrders);
+router.get(`/orders`, protect, shopController.getOrders);
 
 // //Method GET
 // //URL /checkout
-// router.get("/checkout", shopController.getCheckout);
+// router.get("/checkout", protect, shopController.getCheckout);
 
 
 

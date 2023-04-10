@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 const Order = require('../models/Order');
+const csrf = require('csurf');
 
 require('colors')
 
@@ -18,8 +19,7 @@ exports.getProducts = (req, res, next) => {
       res.render(SHOP, {
         prods: products,
         pageTitle: "Shop",
-        path: "/products",
-        isAuthenticated: req.session.isLoggedIn,
+        path: "/products"
       });
     })
     .catch((err) => {
@@ -36,8 +36,7 @@ exports.getProduct = (req, res, next) => {
       res.render(DETAILS, {
         pageTitle: product.title,
         product: product,
-        path: "/products",
-        isAuthenticated: req.session.isLoggedIn,
+        path: "/products"
       });
     })
     .catch(err => console.log(err))
@@ -49,8 +48,8 @@ exports.getIndex = (req, res, next) => {
      res.render(INDEX, {
        prods: products,
        pageTitle: "Shop",
-       path: "/",
-       isAuthenticated: req.session.isLoggedIn,
+       path: "/"
+
      });
   }).catch(err => {
     console.log(err)
@@ -66,8 +65,7 @@ exports.getCart = (req, res, next) => {
       res.render(CART, {
         path: "/cart",
         pageTitle: "Cart",
-        products: products,
-        isAuthenticated: req.session.isLoggedIn,
+        products: products
       });
       })
   .catch(err => {
@@ -81,7 +79,7 @@ exports.postCart = (req, res, next) => {
   Product
     .findById(prodId)
     .then(product => {
-        return req.session.member.addToCart(product)
+        return req.member.addToCart(product)
       })
     .then(result => {
     console.log(result);
@@ -125,15 +123,16 @@ exports.postOrder = (req, res, next) => {
         });
         const order = new Order({
           member: {
-            name: req.session.member.name,
-            memberId: req.session.member._id,
+            name: req.member.name,
+            email: req.member.email,
+            memberId: req.member._id,
           },
           products: products,
         });
         order.save();
   })
     .then(result => {
-      req.session.member.clearCart();
+      req.member.clearCart();
     })
     .then(() => {
       res.redirect("/orders");
@@ -150,8 +149,7 @@ exports.getOrders = (req, res, next) => {
         res.render(ORDERS, {
           path: "/orders",
           pageTitle: "Your Orders",
-          orders: orders,
-          isAuthenticated: req.session.isLoggedIn,
+          orders: orders
         });
     })
     .catch(err => console.log(err))

@@ -14,7 +14,7 @@ const DETAILS = "shop/product-details";
 //method POST
 //url
 exports.getProducts = (req, res, next) => {
-  Product.find()
+  Product.find({ memberId: req.member._id})
     .then(products => {
       res.render(SHOP, {
         prods: products,

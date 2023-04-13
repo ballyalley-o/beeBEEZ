@@ -14,12 +14,12 @@ const DETAILS = "shop/product-details";
 //method POST
 //url
 exports.getProducts = (req, res, next) => {
-  Product.find({ memberId: req.member._id})
+  Product.find()
     .then(products => {
       res.render(SHOP, {
         prods: products,
         pageTitle: "Shop",
-        path: "/products"
+        path: "/products",
       });
     })
     .catch((err) => {

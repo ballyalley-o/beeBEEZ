@@ -74,22 +74,28 @@ exports.postEditProducts = (req, res, next) => {
   Product
     .findById(prodId)
     .then(product => {
+                      if(product.memberId.toString() !== req.member._id.toString()) {
+                        req.flash('error', 'You are not authorized to edit this product')
+                        return
+                      }
                       product.title = updatedTitle;
                       product.imageUrl = updatedImageUrl;
                       product.price = updatedPrice;
                       product.description = updatedDesc;
-                      return product.save();
+                      return product
+                              .save()
+                              .then((result) => {
+                        console.log("PRODUCT UPDATED".green.inverse);
+                        res.redirect("/admin/products");
+                      });
                     })
-    .then(result => {
-      console.log("PRODUCT UPDATED".green.inverse);
-      res.redirect("/admin/products");
-    })
+
     .catch(err => console.log(err))
 }
 
 
 exports.getProducts = (req, res, next) => {
-  Product.find()
+  Product.find({memberId: req.member._id})
     .then(products => {
       res.render(PRODUCTS, {
         prods: products,
@@ -97,6 +103,7 @@ exports.getProducts = (req, res, next) => {
         pageTitle: "Admin: Products"
       })
     }).then(result => {
+      console.log(`Member: ${req.member.name}`.green.inverse)
       console.log("Logging in ADMIN...".white.inverse);
     })
     .catch(err => console.log(err))
@@ -104,7 +111,7 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.findByIdAndRemove(prodId)
+  Product.deleteOne({_id: prodId, memberId: req.member._id})
   .then(result => {
     console.log("PRODUCT DELETED".green.inverse);
     res.redirect("/admin/products");

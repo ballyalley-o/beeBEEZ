@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 const MemberSchema = new Schema(
@@ -19,7 +19,7 @@ const MemberSchema = new Schema(
     },
     password: {
       type: String,
-      required: true
+      required: true,
     },
     resetToken: String,
     resetTokenExpiration: Date,
@@ -89,7 +89,35 @@ MemberSchema.methods.clearCart = function(){
     return this.save();
 }
 
+MemberSchema.pre("save", async function(next) {
+  let member = this;
+
+  // only hash the password if it has been modified (or is new)
+  if (!member.isModified("password")) return next();
+
+  // generate a salt
+  const salt = await bcrypt.genSalt(10);
+
+  // hash the password along with our new salt
+  const hash = await bcrypt.hash(member.password, salt);
+
+  member.password = hash;
+  next();
+})
+
+MemberSchema.methods.comparePassword = async function(enteredPassword, cb) {
+    bcrypt.compare(enteredPassword, this.password, (err, isMatch) => {
+        if (err) return cb(err);
+        cb(null, isMatch);
+    })
+}
+
+
 module.exports = mongoose.model('Member', MemberSchema);
+
+
+
+
 
 // const mongodb = require('mongodb');
 

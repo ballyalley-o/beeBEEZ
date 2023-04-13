@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const SweetAlert = require('sweetalert2');
 const nodemailer = require('nodemailer');
 const mailtrap = require('mailtrap');
+const { validationResult } = require('express-validator/check');
 require('dotenv').config();
 
 const LOGIN = 'auth/login'
@@ -76,10 +77,11 @@ exports.getSignup = (req, res, next) => {
     message = null;
   }
   res.render(SIGNUP, {
-     path: "/signup",
-     pageTitle: "Signup",
-    errorMessage: message
-  })
+    path: "/signup",
+    pageTitle: "Signup",
+    errorMessage: message,
+    currentState: { name: '', email: '' },
+  });
 };
 
 exports.postSignup = (req, res, next) => {
@@ -87,6 +89,15 @@ exports.postSignup = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).render(SIGNUP, {
+        path: "/signup",
+        pageTitle: "Signup",
+        errorMessage: errors.array()[0].msg,
+        currentState: { name: name, email: email }
+      });
+    }
     Member
     .findOne({ email: email })
     .then(userDoc => {
@@ -95,17 +106,25 @@ exports.postSignup = (req, res, next) => {
         console.log("EMAIL ALREADY EXISTS".red.inverse)
         return res.redirect("/signup");
       }
-      return bcrypt
-        .hash(password, 12)
-        .then((hashedPassword) => {
+      if (password !== confirmPassword) {
+        req.flash("error", "PASSWORDS DO NOT MATCH");
+        console.log("PASSWORDS DO NOT MATCH".red.inverse)
+        //return with current state and just empty password field and confirm password field
+        return res.render(SIGNUP, {
+          path: "/signup",
+          pageTitle: "Signup",
+          errorMessage: "PASSWORDS DO NOT MATCH",
+          currentState: { name: name, email: email }
+
+        })
+        }
           const member = new Member({
             name: name,
             email: email,
-            password: hashedPassword,
+            password: password,
             cart: { items: [] },
           });
-          return member.save();
-        })
+          return member.save()
         .then((result) => {
           res.redirect("/login");
           console.log(" MEMBER SIGNED-UP ".blue.inverse);

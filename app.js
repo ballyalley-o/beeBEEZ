@@ -78,8 +78,6 @@ app.use(authRoutes);
 //handles errors
 app.use(errorController.notFound)
 
-
-
 mongoose
   .connect(
     DBURL,

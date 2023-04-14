@@ -10,6 +10,7 @@
                         <p class="text-gray-500 text-2xl text-right">
                             Edit your products
                         </p>
+
                 </div>
             <div class="grid lg:grid-cols-4 grid-rows-4 md:grid-cols-2 sm:grid-cols-1 gap-10">
                 <% for (let product of prods) { %>
@@ -57,12 +58,14 @@
                 </div>
             </div>
             <% } else { %>
-            <div class="container mt-40">
-                <div class="pt-40">
-                    <h1 class="text-center display-1 text-8xl text-white pb-10">No products</h1>
-                    <h1 class="text-center display-1 text-8xl text-white mb-5">🛒</h1>
-                    <p class="text-center text-4xl text-white"><i>we dont have anything</i></p>
-                </div>
+             <div class="pt-40">
+                <h1 class="text-center display-1 text-8xl text-white pb-10">You got No Listing</h1>
+                <h1 class="text-center display-1 text-8xl text-white mb-5">🛒</h1>
+            </div>
+            <div class="hero hero-content m-auto">
+                <button class="bg-yellow-500 hover:bg-purple-500 text-black hover:text-white font-bold py-2 px-4 rounded mt-20">
+                    <a href="/admin/add-product">ADD A LISTING</a>
+                </button>
             </div>
         <% } %>
     </main>

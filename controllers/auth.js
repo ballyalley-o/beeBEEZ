@@ -1,10 +1,9 @@
 const Member = require('../models/Member');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
-const SweetAlert = require('sweetalert2');
 const nodemailer = require('nodemailer');
 const mailtrap = require('mailtrap');
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
 require('dotenv').config();
 
 const LOGIN = 'auth/login'
@@ -32,19 +31,37 @@ exports.getLogin = (req, res, next) => {
       res.render(LOGIN, {
         path: "/login",
         pageTitle: "Login",
-        errorMessage: message
+        errorMessage: message,
+        currentState: { email: "" },
+        validationResult: []
       });
 };
 
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors.array()[0].msg.red.inverse)
+    return res.status(422).render(LOGIN, {
+      path: "/login",
+      pageTitle: "Login",
+      errorMessage: errors.array()[0].msg,
+      currentState: { email: email },
+      validationResult: errors.array()
+    });
+  }
     Member.findOne({ email: email })
     .then(member => {
       if (!member) {
-        req.flash('error', 'INVALID CREDENTIALS')
         console.log("INVALID CREDENTIALS".red.inverse)
-        return res.redirect("/login");
+        return res.status(422).render(LOGIN, {
+          path: "/login",
+          pageTitle: "Login",
+          errorMessage: 'INVALID CREDENTIALS',
+          currentState: { email: email },
+          validationResult: errors.array()
+        });
       }
       bcrypt
         .compare(password, member.password)
@@ -58,8 +75,13 @@ exports.postLogin = (req, res, next) => {
               res.redirect("/");
             })
           }
-            req.flash("error", "INVALID CREDENTIALS");
-            res.redirect("/login");
+          res.status(422).render(LOGIN, {
+            path: "/login",
+            pageTitle: "Login",
+            errorMessage: "INVALID CREDENTIALS",
+            currentState: { email: email },
+            validationResult: errors.array()
+          });
         })
         .catch(err => {
         console.log(err)
@@ -80,7 +102,8 @@ exports.getSignup = (req, res, next) => {
     path: "/signup",
     pageTitle: "Signup",
     errorMessage: message,
-    currentState: { name: '', email: '' },
+    currentState: { name: "", email: "" },
+    validationResult: []
   });
 };
 
@@ -91,11 +114,13 @@ exports.postSignup = (req, res, next) => {
     const confirmPassword = req.body.confirmPassword;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log(errors.array()[0].msg.red.inverse)
       return res.status(422).render(SIGNUP, {
         path: "/signup",
         pageTitle: "Signup",
         errorMessage: errors.array()[0].msg,
-        currentState: { name: name, email: email }
+        currentState: { name: name, email: email },
+        validationResult: errors.array()
       });
     }
     Member
@@ -114,7 +139,8 @@ exports.postSignup = (req, res, next) => {
           path: "/signup",
           pageTitle: "Signup",
           errorMessage: "PASSWORDS DO NOT MATCH",
-          currentState: { name: name, email: email }
+          currentState: { name: name, email: email },
+          validationResult: errors.array()
 
         })
         }

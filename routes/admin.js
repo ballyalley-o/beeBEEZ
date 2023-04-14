@@ -3,6 +3,7 @@ const express = require("express");
 const adminController = require('../controllers/admin')
 const router = express.Router();
 const protect = require('../middleware/auth-protect')
+const sanitizeProducts = require('../helper/sanitize');
 
 // method GET
 // URL /admin/add-product

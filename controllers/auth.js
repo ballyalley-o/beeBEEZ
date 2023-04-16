@@ -33,7 +33,7 @@ exports.getLogin = (req, res, next) => {
         pageTitle: "Login",
         errorMessage: message,
         currentState: { email: "" },
-        validationResult: []
+        validationErrors: []
       });
 };
 
@@ -48,7 +48,7 @@ exports.postLogin = (req, res, next) => {
       pageTitle: "Login",
       errorMessage: errors.array()[0].msg,
       currentState: { email: email },
-      validationResult: errors.array()
+      validationErrors: errors.array()
     });
   }
     Member.findOne({ email: email })
@@ -60,7 +60,7 @@ exports.postLogin = (req, res, next) => {
           pageTitle: "Login",
           errorMessage: 'INVALID CREDENTIALS',
           currentState: { email: email },
-          validationResult: errors.array()
+          validationErrors: errors.array()
         });
       }
       bcrypt
@@ -71,7 +71,7 @@ exports.postLogin = (req, res, next) => {
             req.session.member = member;
             console.log(" MEMBER LOGGED IN ".green.inverse);
             return req.session.save(err => {
-              // console.log(err);
+              console.log(err);
               res.redirect("/");
             })
           }
@@ -80,7 +80,7 @@ exports.postLogin = (req, res, next) => {
             pageTitle: "Login",
             errorMessage: "INVALID CREDENTIALS",
             currentState: { email: email },
-            validationResult: errors.array()
+            validationErrors: errors.array()
           });
         })
         .catch(err => {
@@ -103,7 +103,7 @@ exports.getSignup = (req, res, next) => {
     pageTitle: "Signup",
     errorMessage: message,
     currentState: { name: "", email: "" },
-    validationResult: []
+    validationErrors: []
   });
 };
 
@@ -120,7 +120,7 @@ exports.postSignup = (req, res, next) => {
         pageTitle: "Signup",
         errorMessage: errors.array()[0].msg,
         currentState: { name: name, email: email },
-        validationResult: errors.array()
+        validationErrors: errors.array()
       });
     }
     Member
@@ -140,9 +140,8 @@ exports.postSignup = (req, res, next) => {
           pageTitle: "Signup",
           errorMessage: "PASSWORDS DO NOT MATCH",
           currentState: { name: name, email: email },
-          validationResult: errors.array()
-
-        })
+          validationErrors: errors.array()
+           })
         }
           const member = new Member({
             name: name,

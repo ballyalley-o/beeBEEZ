@@ -12,11 +12,13 @@ const ProductSchema = new Schema({
   },
  description: {
   type: String,
-  required: true
+  required: true,
+  minlength: [10, 'Description must be at least 10 characters long'],
  },
  imageUrl: {
   type: String,
-  required: true
+  required: true,
+  match: [/^https?:\/\//, 'Please add a valid URL']
  },
  memberId: {
   type: Schema.Types.ObjectId,

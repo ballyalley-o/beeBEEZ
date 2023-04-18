@@ -56,10 +56,15 @@ app.use((req, res, next) => {
   }
   Member.findById(req.session.member._id)
     .then((member) => {
+      if (!member) {
+        next();
+      }
       req.member = member;
       next();
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      next(new Error(err))
+    });
 });
 
 //middleware to pass to all routes, protect to csrf attacks, for authentification
@@ -76,7 +81,18 @@ app.use(shopRoutes);
 app.use(authRoutes);
 
 //handles errors
-app.use(errorController.notFound)
+
+app.get('/500', errorController.get500)
+app.use(errorController.notFound);
+
+app.use ((error, req, res, next) => {
+  // res.redirect('/500')
+  res.status(500).render('500', {
+    pageTitle: 'Error',
+    path: '/500',
+    isAuthenticated: req.session.isLoggedIn,
+  })
+})
 
 mongoose
   .connect(

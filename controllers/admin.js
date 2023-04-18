@@ -62,22 +62,26 @@ exports.postAddProduct = (req, res, next) => {
       console.log("PRODUCT CREATED".green.inverse);
       res.redirect("/admin/products");
     })
-    .catch((err) => {
-      console.log(err)
-      res.status(500).render(EDIT, {
-        pageTitle: "Add Product",
-        path: "admin/add-product",
-        editing: false,
-        hasError: true,
-        errorMessage: "Validation failed, please try again.",
-        product: {
-          title: title,
-          price: price,
-          description: description,
-          imageUrl: imageUrl
-        },
-        validationErrors: errors.array()
-      });
+    // .catch((err) => {
+      // console.log(err)
+      // res.status(500).render(EDIT, {
+      //   pageTitle: "Add Product",
+      //   path: "admin/add-product",
+      //   editing: false,
+      //   hasError: true,
+      //   errorMessage: "Validation failed, please try again.",
+      //   product: {
+      //     title: title,
+      //     price: price,
+      //     description: description,
+      //     imageUrl: imageUrl
+      //   },
+      //   validationErrors: errors.array()
+      // });
+      .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error)
     });
 };
 
@@ -104,7 +108,11 @@ exports.getEditProduct = (req, res, next) => {
       validationErrors: [],
     });
   })
-  .catch(err => console.log(err))
+  .catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  })
 }
 
 exports.postEditProducts = (req, res, next) => {
@@ -172,27 +180,35 @@ exports.postEditProducts = (req, res, next) => {
 }
 
 exports.getProducts = (req, res, next) => {
-  Product.find({memberId: req.member._id})
-    .then(products => {
+  Product.find({ memberId: req.member._id })
+    .then((products) => {
       res.render(PRODUCTS, {
         prods: products,
         path: "admin/products",
-        pageTitle: "Admin: Products"
-      })
-    }).then(result => {
-      console.log(`Member: ${req.member.name}`.green.inverse)
+        pageTitle: "Admin: Products",
+      });
+    })
+    .then((result) => {
+      console.log(`Member: ${req.member.name}`.green.inverse);
       console.log("Logging in ADMIN...".white.inverse);
     })
-    .catch(err => console.log(err))
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 }
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteOne({_id: prodId, memberId: req.member._id})
-  .then(result => {
-    console.log("PRODUCT DELETED".green.inverse);
-    res.redirect("/admin/products");
-  })
-  .catch(err => console.log(err))
-
+  Product.deleteOne({ _id: prodId, memberId: req.member._id })
+    .then((result) => {
+      console.log("PRODUCT DELETED".green.inverse);
+      res.redirect("/admin/products");
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };

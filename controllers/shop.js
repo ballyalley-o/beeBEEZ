@@ -15,7 +15,7 @@ const DETAILS = "shop/product-details";
 //url
 exports.getProducts = (req, res, next) => {
   Product.find()
-    .then(products => {
+    .then((products) => {
       res.render(SHOP, {
         prods: products,
         pageTitle: "Shop",
@@ -23,54 +23,63 @@ exports.getProducts = (req, res, next) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
     });
   console.log("Logging in TECHNOLOGY...".white.inverse);
 };
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  Product
-    .findById(prodId)
-    .then(product => {
+  Product.findById(prodId)
+    .then((product) => {
       res.render(DETAILS, {
         pageTitle: product.title,
         product: product,
-        path: "/products"
+        path: "/products",
       });
     })
-    .catch(err => console.log(err))
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.getIndex = (req, res, next) => {
   Product.find()
-  .then(products => {
-     res.render(INDEX, {
-       prods: products,
-       pageTitle: "Shop",
-       path: "/"
-
-     });
-  }).catch(err => {
-    console.log(err)
-  })
+    .then((products) => {
+      res.render(INDEX, {
+        prods: products,
+        pageTitle: "Shop",
+        path: "/",
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
   console.log("Logging in INDEX...".white.inverse);
 };
 
 exports.getCart = (req, res, next) => {
   req.member
-  .populate('cart.items.productId')
-  .then(member => {
+    .populate("cart.items.productId")
+    .then((member) => {
       const products = member.cart.items;
       res.render(CART, {
         path: "/cart",
         pageTitle: "Cart",
-        products: products
+        products: products,
       });
-      })
-  .catch(err => {
-    console.log(err)
-  })
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
   console.log("Logging in CART...".white.inverse);
 };
 
@@ -97,9 +106,10 @@ exports.postCartDeleteProduct = (req, res, next) => {
       res.redirect("/cart");
     })
     .catch((err) => {
-      console.log(err);
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
     });
-
 
   // //find the product in the Product model
   // Product.findByPk(prodId, product => {
@@ -130,16 +140,17 @@ exports.postOrder = (req, res, next) => {
           products: products,
         });
         order.save();
-  })
+     })
     .then(result => {
       req.member.clearCart();
     })
     .then(() => {
       res.redirect("/orders");
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    }).catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error)
+    });
 };
 
 exports.getOrders = (req, res, next) => {
@@ -151,8 +162,11 @@ exports.getOrders = (req, res, next) => {
           pageTitle: "Your Orders",
           orders: orders
         });
-    })
-    .catch(err => console.log(err))
+    }).catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error)
+    });
 };
 
 exports.getCheckout = (req, res, next) => {

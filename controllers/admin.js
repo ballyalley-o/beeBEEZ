@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Product = require("../models/Product");
 const Member = require("../models/Member");
 const { validationResult } = require("express-validator/check");
@@ -13,7 +14,7 @@ require('colors')
 exports.getAddProduct = (req, res, next) => {
   res.render(EDIT, {
     pageTitle: "Add Product",
-    path: "admin/add-product",
+    path: "/admin/add-product",
     editing: false,
     hasError: false,
     errorMessage: null,
@@ -26,10 +27,25 @@ exports.getAddProduct = (req, res, next) => {
 //url
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
-  const imageUrl = req.body.imageUrl;
+  const image = req.file
   const price = req.body.price;
   const description = req.body.description;
-  //collect all mongoose validation errors
+  console.log(image)
+  if (!image) {
+    return res.status(422).render(EDIT, {
+      pageTitle: "Add Product",
+      path: "/admin/add-product",
+      editing: false,
+      hasError: true,
+      product: {
+        title: title,
+        price: price,
+        description: description,
+      },
+      errorMessage: 'Document file type is not acepted.',
+      validationErrors: [],
+    });
+  }
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).render(EDIT, {
@@ -37,24 +53,24 @@ exports.postAddProduct = (req, res, next) => {
       path: "/admin/add-product",
       editing: false,
       hasError: true,
-      errorMessage: errors.array()[0].msg,
       product: {
         title: title,
         price: price,
         description: description,
-        imageUrl: imageUrl,
       },
       errorMessage: errors.array()[0].msg,
       validationErrors: errors.array(),
     });
   }
+  const imageUrl = image.path;
+
   const product = new Product({
-                                title: title,
-                                price: price.replace(/\$/g, ''),
-                                description: description,
-                                imageUrl: imageUrl,
-                                memberId: req.member
-                              });
+    title: title,
+    price: price.replace(/\$/g, ""),
+    description: description,
+    imageUrl: imageUrl,
+    memberId: req.member,
+  });
   product
     .save()
     .then((result) => {
@@ -118,7 +134,7 @@ exports.getEditProduct = (req, res, next) => {
 exports.postEditProducts = (req, res, next) => {
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
-  const updatedImageUrl = req.body.imageUrl;
+  const image = req.file;
   const updatedPrice = req.body.price.replace(/\$/g, "");
   const updatedDesc = req.body.description;
   const errors = validationResult(req);
@@ -131,7 +147,6 @@ exports.postEditProducts = (req, res, next) => {
       hasError: true,
       product: {
         title: updatedTitle,
-        imageUrl: updatedImageUrl,
         price: updatedPrice,
         description: updatedDesc,
         _id: prodId
@@ -140,43 +155,47 @@ exports.postEditProducts = (req, res, next) => {
       validationErrors: errors.array(),
     });
   }
-  Product
-    .findById(prodId)
-    .then(product => {
-                      if(product.memberId.toString() !== req.member._id.toString()) {
-                        req.flash('error', 'You are not authorized to edit this product')
-                        return
-                      }
-                      product.title = updatedTitle;
-                      product.imageUrl = updatedImageUrl;
-                      product.price = updatedPrice;
-                      product.description = updatedDesc;
-                      return product
-                              .save()
-                              .then((result) => {
-                        console.log("PRODUCT UPDATED".green.inverse);
-                        res.redirect("/admin/products");
-                      });
-                    })
-
-    .catch(err => {
-      console.log(err)
-      res.status(500).render(EDIT, {
-        pageTitle: "Edit Product",
-        path: "admin/edit-product",
-        editing: false,
-        hasError: true,
-        errorMessage: "Validation failed, please try again.",
-        product: {
-          title: updatedTitle,
-          price: updatedPrice,
-          description: updatedDesc,
-          imageUrl: updatedImageUrl,
-          _id: prodId
-        },
-        validationErrors: errors.array(),
+  Product.findById(prodId)
+    .then((product) => {
+      if (product.memberId.toString() !== req.member._id.toString()) {
+        req.flash("error", "You are not authorized to edit this product");
+        return res.redirect("/");
+      }
+      product.title = updatedTitle;
+      product.price = updatedPrice;
+      product.description = updatedDesc;
+      if (image) {
+        product.imageUrl = image.path;
+      }
+      return product.save().then((result) => {
+        console.log("PRODUCT UPDATED".green.inverse);
+        res.redirect("/admin/products");
       });
     })
+
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+    // .catch(err => {
+    //   console.log(err)
+    //   res.status(500).render(EDIT, {
+    //     pageTitle: "Edit Product",
+    //     path: "admin/edit-product",
+    //     editing: false,
+    //     hasError: true,
+    //     errorMessage: "Validation failed, please try again.",
+    //     product: {
+    //       title: updatedTitle,
+    //       price: updatedPrice,
+    //       description: updatedDesc,
+    //       imageUrl: updatedImageUrl,
+    //       _id: prodId
+    //     },
+    //     validationErrors: errors.array(),
+    //   });
+    // })
 }
 
 exports.getProducts = (req, res, next) => {

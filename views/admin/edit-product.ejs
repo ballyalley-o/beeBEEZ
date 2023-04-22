@@ -6,7 +6,11 @@
     <% if (errorMessage) { %>
         <div class="message message-error mt-20 ease-in-out"> <h3><%= errorMessage %></h3></div>
     <% } %>
-      <form action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" class="product-form w-full" method="POST">
+      <form
+            action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" class="product-form w-full"
+            method="POST"
+            enctype="multipart/form-data"
+            >
        <div class="card parent-div-input flex items-center mt-20">
         <div class="card-body center w-96">
         <div class="form-control mb-6 w-full">
@@ -21,17 +25,18 @@
         </div>
         <div class="form-control mb-6 w-full">
             <label
-            for="imageUrl"
-            class="text-gray-500 font-bold mb-4 md:mb-0 pr-4">Image URL
+            for="image"
+            class="text-gray-500 font-bold mb-4 md:mb-0 pr-4">Image
             </label>
+             <!-- class="<%= validationErrors.find(e => e.param === 'image') ? 'invalid inline-block input-shop bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500' : 'inline-block input-shop bg-gray-200 appearance-none border-2 border-gray-200 rounded py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500' %>" -->
             <input
-                type="text"
-                name="imageUrl"
-                id="imageUrl"
-                class="<%= validationErrors.find(e => e.param === 'imageUrl') ? 'invalid inline-block input-shop bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500' : 'inline-block input-shop bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500' %>"
-                value="<% if (editing || hasError) { %><%= product.imageUrl %><% } %>"
+                type="file"
+                name="image"
+                id="image"
+                class="inline-block input-shop bg-gray-200 appearance-none border-2 border-gray-200 rounded py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                 >
         </div>
+        <!-- value="<% if (editing || hasError) { %><%= product.imageUrl %><% } %>" -->
         <div class="form-control mb-6 w-full">
             <label
                 for="price"

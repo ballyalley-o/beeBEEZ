@@ -28,8 +28,6 @@ const sanitizeProducts = [
         })
         .isLength({ min: 5, max: 400 })
         .withMessage("Description must be between 5 and 200 characters long"),
-      body("imageUrl").isURL(),
-
     ]
 
 const capitalizeFirstLetter = (string) => {

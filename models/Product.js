@@ -18,7 +18,7 @@ const ProductSchema = new Schema({
  imageUrl: {
   type: String,
   required: true,
-  match: [/^https?:\/\//, 'Please add a valid URL']
+  // match: [/^https?:\/\//, 'Please add a valid URL']
  },
  memberId: {
   type: Schema.Types.ObjectId,

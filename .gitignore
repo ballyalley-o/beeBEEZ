@@ -4,3 +4,6 @@ env:
     - MONGODB_PORT=27017
     - MONGODB_DB=beeBEEZ
     - MONGODB_PASSWD=bally123
+
+images/
+invoices/

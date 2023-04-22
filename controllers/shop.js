@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+const PDFDoc = require('pdfkit')
 const Product = require('../models/Product');
 const Order = require('../models/Order');
 const csrf = require('csurf');
@@ -176,4 +179,77 @@ exports.getCheckout = (req, res, next) => {
   })
 };
 
+
+exports.getInvoice = (req, res, next) => {
+  const orderId = req.params.orderId;
+  Order.findById(orderId)
+    .then((order) => {
+      if (!order) {
+        return new Error("No order no. found");
+      }
+      if (order.member.memberId.toString() !== req.member._id.toString()) {
+        return next(new Error("Unauthorized to access this order"));
+      }
+      const invoiceName = "invoice_" + orderId + ".pdf";
+      const invoicePath = path.join("data", "invoices", invoiceName);
+
+      const pdfDoc = new PDFDoc();
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        'inline; filename="' + invoiceName + '"'
+      );
+      pdfDoc.pipe(fs.createWriteStream(invoicePath));
+      pdfDoc.pipe(res);
+
+      pdfDoc.image("public/assets/hippo.png", 170, 150, {});
+      pdfDoc.font('Helvetica')
+      pdfDoc
+        .fontSize(22)
+        .text("beeBEEZ Invoice", 90, 150, {
+          //add more options
+          align: "center",
+        });
+
+       pdfDoc.fontSize(10).text("www.beeBEEZ.co.nz", 15, 170, {
+          link: 'https://www.beeBEEZ.co.nz',
+          underline: true,
+          align: 'center'
+
+       });
+
+       pdfDoc
+          .fontSize(23)
+          .text('Thank you for Shopping with us!', 120, 450, {
+            margin: 20,
+       })
+
+      pdfDoc.moveDown()
+      pdfDoc.text("---------------------------------------", 200, 200);
+      let totalPrice = 0;
+      order.products.forEach((prod) => {
+        totalPrice += prod.quantity * prod.product.price;
+        pdfDoc
+          .fontSize(14)
+          .text(
+            prod.product.title +
+              " - " +
+              prod.quantity +
+              " * " +
+              " $ " +
+              prod.product.price
+          );
+      });
+
+      pdfDoc.text("--------------------------------------------------");
+      pdfDoc.fontSize(18).text("Total Price: $" + totalPrice);
+
+
+
+      pdfDoc.end();
+    })
+    .catch((err) => {
+      return next(err);
+    });
+}
 

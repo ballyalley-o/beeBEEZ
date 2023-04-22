@@ -29,7 +29,9 @@
                                                 <li class="flex flex-col m-1 justify-around"><span class="inline-block text-xl"><b><%= p.product.title %></b></span><span class="inline badge content-right rounded text-base-300 badge-outline font-bold">Quantity: <b><%= p.quantity %></b></span></li>
                                                 <hr>
                                             <% }) %>
+                                            <li class="pt-5"><a href="/orders/<%= order._id %>" target="_blank">Download Invoice</a></li>
                                         </ul>
+
                                     </div>
                                 </span>
                             </div>

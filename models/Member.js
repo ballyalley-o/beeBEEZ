@@ -7,7 +7,7 @@ const MemberSchema = new Schema(
     name: {
       type: String,
       required: true,
-      match: [/^[a-zA-Z ]+$/, "Please add a valid name"],
+      // match: [/^[a-zA-Z ]+$/, "Please add a valid name"],
     },
     email: {
       type: String,

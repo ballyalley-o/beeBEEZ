@@ -5,6 +5,8 @@ const Product = require('../models/Product');
 const Order = require('../models/Order');
 const csrf = require('csurf');
 
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
 require('colors')
 
 const SHOP = "shop/product-list"
@@ -147,17 +149,59 @@ exports.postCartDeleteProduct = (req, res, next) => {
       error.httpStatusCode = 500;
       return next(error);
     });
-
-  // //find the product in the Product model
-  // Product.findByPk(prodId, product => {
-  //   //delete the product from the cart
-  //   Cart.deleteProduct(prodId, product.price);
-  //   //redirect to the cart page
-  //   res.redirect('/cart')
-  // })
 }
 
-exports.postOrder = (req, res, next) => {
+exports.getCheckout = (req, res, next) => {
+  let products;
+  let total = 0;
+  req.member
+    .populate("cart.items.productId")
+    .then((member) => {
+      products = member.cart.items;
+      total = 0;
+      products.forEach(p => {
+        total += p.quantity * p.productId.price;
+      });
+
+      return stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        mode: "payment",
+        line_items: products.map(p => {
+          return {
+            quantity: p.quantity,
+            price_data: {
+              currency: 'nzd',
+              unit_amount: p.productId.price * 100,
+              product_data: {
+                name: p.productId.title,
+                description: p.productId.description
+              }
+            }
+          }
+        }),
+        customer_email: req.member.email,
+        success_url: req.protocol + '://' + req.get('host') + '/checkout/success',
+        cancel_url: req.protocol + '://' + req.get('host') + '/checkout/cancel',
+      });
+    })
+    .then(session => {
+          res.render(CHECKOUT, {
+            path: "/checkout",
+            pageTitle: "Checkout",
+            products: products,
+            totalCost: total,
+            sessionId: session.id
+            });
+          })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+  console.log("Logging in CHECKOUT...".white.inverse);
+};
+
+exports.getCheckoutSuccess = (req, res, next) => {
   req.member
   .populate('cart.items.productId')
   .then(member => {
@@ -183,7 +227,8 @@ exports.postOrder = (req, res, next) => {
     })
     .then(() => {
       res.redirect("/orders");
-    }).catch((err) => {
+    })
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error)
@@ -205,14 +250,6 @@ exports.getOrders = (req, res, next) => {
       return next(error)
     });
 };
-
-exports.getCheckout = (req, res, next) => {
-  res.render(CHECKOUT, {
-    path: '/checkout',
-    pageTitle: 'Checkout'
-  })
-};
-
 
 exports.getInvoice = (req, res, next) => {
   const orderId = req.params.orderId;
@@ -261,6 +298,7 @@ exports.getInvoice = (req, res, next) => {
       pdfDoc.moveDown()
       pdfDoc.text("---------------------------------------", 200, 200);
       let totalPrice = 0;
+      pdfDoc.page.margins = {top: 50, bottom: 50, left: 0, right: 0}
       order.products.forEach((prod) => {
         totalPrice += prod.quantity * prod.product.price;
         pdfDoc

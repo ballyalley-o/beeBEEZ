@@ -12,7 +12,7 @@
                             </i> Find your next tech gadget
                         </p>
                 </div>
-            <div class="grid lg:grid-cols-4 grid-rows-4 md:grid-cols-2 sm:grid-cols-1 gap-10">
+            <div class="grid lg:grid-cols-4 grid-rows-2 md:grid-cols-2 sm:grid-cols-1 gap-10">
                 <% for (let product of prods) { %>
                 <div class="card bg-white shadow-2xl rounded-12 overflow-hidden hover:bg-gradient-to-r from-accent-500 via-pink-500 to-white-500 transition duration-300 ease-in-out hover:opacity-90 hover:scale-105">
                     <div class="col-span-1 px-2 py-2 m-2">
@@ -52,6 +52,7 @@
                     </div>
                 <% } %>
                 </div>
+                <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage }) %>
             </div>
             <% } else { %>
         <div class="container mt-40">

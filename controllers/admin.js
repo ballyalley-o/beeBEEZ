@@ -14,7 +14,7 @@ require('colors')
 //url
 exports.getAddProduct = (req, res, next) => {
   res.render(EDIT, {
-    pageTitle: "Add Product",
+    pageTitle: "Sell",
     path: "/admin/add-product",
     editing: false,
     hasError: false,
@@ -34,7 +34,7 @@ exports.postAddProduct = (req, res, next) => {
   console.log(image)
   if (!image) {
     return res.status(422).render(EDIT, {
-      pageTitle: "Add Product",
+      pageTitle: "Sell",
       path: "/admin/add-product",
       editing: false,
       hasError: true,
@@ -220,8 +220,8 @@ exports.getProducts = (req, res, next) => {
     });
 }
 
-exports.postDeleteProduct = (req, res, next) => {
-  const prodId = req.body.productId;
+exports.deleteProduct = (req, res, next) => {
+  const prodId = req.params.productId;
   Product
     .findById(prodId)
     .then(product => {
@@ -233,11 +233,9 @@ exports.postDeleteProduct = (req, res, next) => {
     })
     .then((result) => {
       console.log("PRODUCT DELETED".green.inverse);
-      res.redirect("/admin/products");
+      res.status(200).json({message: 'Product deleted'})
     })
     .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
+      res.status(500).json({message: 'Failed to delete the product'})
     });
 };

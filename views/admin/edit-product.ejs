@@ -47,7 +47,7 @@
                 name="price"
                 id="price"
                 class="<%= validationErrors.find(e => e.param === 'price') ? 'invalid input-shop bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500' : 'input-shop bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500' %>"
-                step="0.01"
+                step="0.001"
                 value="<% if (editing || hasError) { %><%= product.price %><% } %>"
                 >
         </div>

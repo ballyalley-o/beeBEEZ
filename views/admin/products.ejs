@@ -14,7 +14,7 @@
                 </div>
             <div class="grid lg:grid-cols-4 grid-rows-4 md:grid-cols-2 sm:grid-cols-1 gap-10">
                 <% for (let product of prods) { %>
-                <div class="card bg-white shadow-2xl rounded-12 overflow-hidden hover:bg-gradient-to-r from-accent-500 via-pink-500 to-white-500 transition duration-300 ease-in-out hover:opacity-90 hover:scale-105">
+                <div id="parentCard" class="card bg-white shadow-2xl rounded-12 overflow-hidden hover:bg-gradient-to-r from-accent-500 via-pink-500 to-white-500 transition duration-300 ease-in-out hover:opacity-90 hover:scale-105">
                     <div class="sm:col-span-1 px-2 py-2 m-2">
                         <figure class="sm:col-span-1 rounded-8 h-64 overflow-hidden">
                             <img
@@ -45,11 +45,9 @@
                                     <a href="/admin/edit-product/<%= product._id %>?edit=true" class="btn btn-info text-white hover:bg-gray-800 hover:text-white font-bold">EDIT</a>
                                 </span>
                                 <span class="block">
-                                    <form action="/admin/delete-product" method="POST">
                                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                         <input type="hidden" value="<%= product._id %>" name="productId">
-                                        <button type="submit" class="btn btn-error text-base-300 hover:bg-error hover:text-white font-bold">DELETE</button>
-                                    </form>
+                                        <button type="button" class="btn btn-error text-base-300 hover:bg-error hover:text-white font-bold" onclick="deleteProduct(this)">DELETE</button>
                                 </span>
                             </div>
                         </div>
@@ -70,3 +68,4 @@
         <% } %>
     </main>
 <%- include('../includes/end.ejs') %>
+<script src="/js/admin.js"></script>

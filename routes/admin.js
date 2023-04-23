@@ -12,7 +12,7 @@ router.get("/products", protect, adminController.getProducts);
 router.post("/add-product", sanitizeProducts, protect, adminController.postAddProduct);
 router.get("/edit-product/:productId", protect, adminController.getEditProduct);
 router.post("/edit-product", sanitizeProducts, protect, adminController.postEditProducts);
-router.post("/delete-product", protect, adminController.postDeleteProduct);
+router.delete("/product/:productId", protect, adminController.deleteProduct);
 
 module.exports = router;
 

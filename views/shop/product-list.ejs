@@ -6,7 +6,7 @@
         <% if (prods.length > 0) { %>
         <div class="m-16 pt-20">
             <div class="header flex flex-col content-center my-20">
-                        <h1 class="hero text-8xl font-bold text-white">Technology</h1>
+                        <h1 class="hero text-8xl font-bold">Technology</h1>
                         <p class="text-gray-500 text-2xl text-center">
                             <i class="fa-li fa fa-spinner fa-spin">
                             </i> Find your next tech gadget
@@ -42,7 +42,7 @@
                             </div>
                             <div class="card-actions justify- w-96">
                                 <span class="">
-                                    <a href="/products/<%= product._id %>" class="btn">Details</a>
+                                    <a href="/products/<%= product._id %>" class="btn bg-accent-content text-error hover:text-white">Details</a>
                                 </span>
                                 <span class="block">
                                     <%- include('../includes/add-to-cart.ejs', {product: product}) %>

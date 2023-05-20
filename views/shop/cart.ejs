@@ -20,7 +20,7 @@
                                         <form action="/cart-delete-item" method="POST">
                                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                             <input type="hidden" name="productId" value="<%= p.productId._id %>">
-                                            <button class="btn btn-error text-base-300 hover:text-white" type="submit">DELETE</button>
+                                            <button class="btn btn-error text-black hover:text-white" type="submit">DELETE</button>
                                         </form>
                                     </span>
                                 </li>
@@ -32,7 +32,7 @@
                                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                 <button type="submit" class="text-black border bg-yellow-500 border-secondary-500 rounded-xl hover:bg-base-300 hover:text-white active:bg-primary-600 font-bold uppercase px-8 py-3 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">CHECKOUT</button>
                             </form> -->
-                            <a href="/checkout" class="btn text-black border bg-yellow-500 border-secondary-500 rounded-xl hover:bg-base-300 hover:text-white active:bg-primary-600 font-bold uppercase px-8 py-3 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">CHECKOUT</a>
+                            <a href="/checkout" class="btn bg-accent rounded-md hover:bg-white hover:text-black font-bold uppercase px-8 py-3 focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">CHECKOUT</a>
                         </div>
                     </div>
                 </div>
@@ -40,9 +40,9 @@
          </div>
         <% } else { %>
             <div class="pt-40">
-                <h1 class="text-center display-1 text-8xl text-white pb-10">No products in your cart</h1>
-                <h1 class="text-center display-1 text-8xl text-white mb-5">🛒</h1>
-                <p class="text-center text-4xl text-white"><i>..fill me up</i></p>
+                <h1 class="text-center display-1 text-8xl pb-10">No products in your cart</h1>
+                <h1 class="text-center display-1 text-8xl mb-5">🛒</h1>
+                <p class="text-center text-4xl"><i>..fill me up</i></p>
             </div>
         <% } %>
     </main>

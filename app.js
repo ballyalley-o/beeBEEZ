@@ -1,4 +1,6 @@
+const fs = require('fs');
 const path = require('path');
+const https = require('https');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -7,13 +9,14 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
 const multer = require('multer');
-
+const helmet = require('helmet');
 const {
   DATABASE,
   logMsg,
   status1,
   status2,
   serverLog,
+  envMode
 } = require("./helper/logger");
 require('dotenv').config();
 require('colors')
@@ -22,9 +25,9 @@ const store = new MongoDBStore({
   uri: DBURL,
   collection: 'Sessions'
 })
-const csrfProtect = csrf()
-
-
+const csrfProtect = csrf();
+// const privateKey = fs.readFileSync('server.key');
+// const certificate = fs.readFileSync('server.cert');
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'images')
@@ -53,14 +56,20 @@ const Member = require('./models/Member');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
 app.set("view engine", "ejs");
 app.set("views", "views");
 
 const adminData = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
+const { compress } = require('pdfkit');
+const compression = require('compression');
+const morgan = require('morgan');
+const accessLogStream = require('fs').createWriteStream(
+  path.join(__dirname, 'access.log'),
+)
 
+app.use(morgan('combined', {stream: accessLogStream}));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('image'))
 app.use(express.static(path.join(__dirname, 'public')));
@@ -105,7 +114,6 @@ app.use(shopRoutes);
 app.use(authRoutes);
 
 //handles errors
-
 app.get('/500', errorController.get500)
 app.use(errorController.notFound);
 
@@ -128,7 +136,10 @@ mongoose
     console.log(logMsg, status1)
   )
   .then(result => {
+    // ready for https
+    // https.createServer({key: privateKey, cert: certificate}, app).listen(PORT)
     app.listen(PORT)
+    console.log(envMode)
   })
   .catch(err => {
     console.log(logMsg, status2)

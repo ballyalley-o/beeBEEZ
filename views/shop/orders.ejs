@@ -6,8 +6,8 @@
         <% if (orders.length <= 0) { %>
          <div class="text-center m-auto">
             <div class="pt-40">
-                <h1 class="text-center display-1 text-8xl text-white pb-10">Waiting on Orders</h1>
-                <h1 class="text-center display-1 text-8xl text-white mb-5">🛒</h1>
+                <h1 class="text-center display-1 text-8xl pb-10">Waiting on Orders</h1>
+                <h1 class="text-center display-1 text-8xl mb-5">🛒</h1>
             </div>
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-20">
                     <a href="/">back to home</a>
@@ -21,15 +21,27 @@
                             <div class="max-w-xl w-full p-10 bg-gray-300 border-2xl rounded-2xl">
                                 <span class="inline-block">
                                     <div class="bg-white-500 rounded-lg p-2">
-                                        <h1 class="text-2xl text-base-300 p-2 m-1 font-bold"><span class="bg-yellow-500 px-3 py-2 rounded-lg">Order#</span> <%= order._id %></h1>
+                                        <h1 class="text-2xl p-2 m-1 font-bold"><span class="bg-yellow-500 px-3 py-2 rounded-lg text-black">Order#</span> <%= order._id %></h1>
                                     </div>
-                                    <div class="p-2 text-base-300">
+                                    <div class="p-2">
                                         <ul>
                                             <% order.products.forEach(p => { %>
-                                                <li class="flex flex-col m-1 justify-around"><span class="inline-block text-xl"><b><%= p.product.title %></b></span><span class="inline badge content-right rounded text-base-300 badge-outline font-bold">Quantity: <b><%= p.quantity %></b></span></li>
+                                                <li class="flex flex-col m-1 justify-around">
+                                                    <span class="inline-block text-xl">
+                                                        <b><%= p.product.title %></b>
+                                                    </span>
+                                                    <span class="inline badge content-right rounded badge-outline font-bold">Quantity: <b><%= p.quantity %></b>
+                                                    </span>
+                                                </li>
+                                                <!-- hr color black -->
+                                                <hr class="border-black">
                                                 <hr>
                                             <% }) %>
-                                            <li class="pt-5"><a href="/orders/<%= order._id %>" target="_blank">Download Invoice</a></li>
+                                            <li class="pt-5"><a href="/orders/<%= order._id %>" target="_blank"> <i class="fa fa-download"></i>
+                                                &nbsp;
+                                                Download Invoice
+                                               </i>
+                                            </a></li>
                                         </ul>
 
                                     </div>

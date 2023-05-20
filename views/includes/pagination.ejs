@@ -1,4 +1,4 @@
- <div class="grid grid-cols-5 hero">
+ <div class="grid grid-cols-5 hero pt-10">
     <div class="btn-group col-span-5 flex pt-5 justify-center">
         <% if (currentPage != 1) { %>
                 <button class="btn btn-outline"><a href="?page=<%= previousPage %>">Previous</a></button>
@@ -8,6 +8,6 @@
                 <button class="btn btn-outline"><a href="?page=<%= nextPage %>"><% if (nextPage) { %> Next <% } %></a></button>
         <% } %>
         <% if (lastPage !== currentPage && nextPage !== lastPage )%>
-                <button class="btn btn-outline" <% if (!hasNextPage) { %> disabled <% } %>><a href="?page=<%= lastPage %>"></a><% if (lastPage) { %> Last <% } %></a></button>
+                <button class="btn btn-outline" <% if (!hasNextPage) { %> disabled <% } %>> <a href="?page=<%= lastPage %>"><% if (lastPage) { %> Last <% } %></a></button>
     </div>
 </div>

@@ -15,7 +15,7 @@
                 type="name"
                 name="name"
                 id="name"
-                class="<%= validationErrors.find(e => e.param === 'name') ? 'invalid p-2 rounded-lg' : 'p-2 rounded-lg' %>"
+                class="<%= validationErrors.find(e => e.param === 'name') ? 'invalid p-2 rounded-lg border-2' : 'p-2 rounded-lg border-2' %>"
                 value="<%= currentState.name %>"
                 >
         </div>
@@ -25,8 +25,7 @@
                 type="email"
                 name="email"
                 id="email"
-
-                class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid p-2 rounded-lg' : 'p-2 rounded-lg' %>"
+                class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid p-2 rounded-lg border-2' : 'p-2 rounded-lg border-2' %>"
                 value="<%= currentState.email %>"
                 >
         </div>
@@ -39,7 +38,7 @@
                 type="password"
                 name="password"
                 id="password"
-                class="<%= validationErrors.find(e => e.param === 'imageUrl') ? 'invalid p-2 rounded-lg' : 'p-2 rounded-lg' %>"
+                class="<%= validationErrors.find(e => e.param === 'imageUrl') ? 'invalid p-2 rounded-lg border-2' : 'p-2 rounded-lg border-2' %>"
                 >
         </div>
          <div class="form-control mb-10 w-full">
@@ -51,7 +50,7 @@
                 type="password"
                 name="confirmPassword"
                 id="confirmPassword"
-                class="<%= validationErrors.find(e => e.param === 'imageUrl') ? 'invalid p-2 rounded-lg' : 'p-2 rounded-lg' %>"
+                class="<%= validationErrors.find(e => e.param === 'imageUrl') ? 'invalid p-2 rounded-lg border-2' : 'p-2 rounded-lg border-2' %>"
                 >
         </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">

@@ -1,9 +1,6 @@
 node_modules/
-env:
-    - MONGODB_HOST=bally123.7dkc9jh.mongodb.net
-    - MONGODB_PORT=27017
-    - MONGODB_DB=beeBEEZ
-    - MONGODB_PASSWD=bally123
-
+.env
 images/
 invoices/
+server.cert
+server.key

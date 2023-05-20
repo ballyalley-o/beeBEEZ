@@ -79,22 +79,6 @@ exports.postAddProduct = (req, res, next) => {
       console.log("PRODUCT CREATED".green.inverse);
       res.redirect("/admin/products");
     })
-    // .catch((err) => {
-      // console.log(err)
-      // res.status(500).render(EDIT, {
-      //   pageTitle: "Add Product",
-      //   path: "admin/add-product",
-      //   editing: false,
-      //   hasError: true,
-      //   errorMessage: "Validation failed, please try again.",
-      //   product: {
-      //     title: title,
-      //     price: price,
-      //     description: description,
-      //     imageUrl: imageUrl
-      //   },
-      //   validationErrors: errors.array()
-      // });
       .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
@@ -180,24 +164,6 @@ exports.postEditProducts = (req, res, next) => {
       error.httpStatusCode = 500;
       return next(error);
     });
-    // .catch(err => {
-    //   console.log(err)
-    //   res.status(500).render(EDIT, {
-    //     pageTitle: "Edit Product",
-    //     path: "admin/edit-product",
-    //     editing: false,
-    //     hasError: true,
-    //     errorMessage: "Validation failed, please try again.",
-    //     product: {
-    //       title: updatedTitle,
-    //       price: updatedPrice,
-    //       description: updatedDesc,
-    //       imageUrl: updatedImageUrl,
-    //       _id: prodId
-    //     },
-    //     validationErrors: errors.array(),
-    //   });
-    // })
 }
 
 exports.getProducts = (req, res, next) => {

@@ -15,7 +15,7 @@
                 type="email"
                 name="email"
                 id="email"
-                class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid p-2 rounded-lg' : 'p-2 rounded-lg' %>"
+                class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid p-2 rounded-lg border' : 'p-2 rounded-lg border-2' %>"
                 value="<%= currentState.email %>"
                 >
         </div>
@@ -28,7 +28,7 @@
                 type="password"
                 name="password"
                 id="password"
-                class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid p-2 rounded-lg' : 'p-2 rounded-lg' %>"
+                class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid p-2 rounded-lg border-2' : 'p-2 rounded-lg border-2' %>"
                 >
                 <a href="/reset" class="text-right m-2 text-xs text-yellow-500 hover:text-gray-300">Forgot Password?</a>
         </div>
